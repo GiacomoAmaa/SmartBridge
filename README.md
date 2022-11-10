@@ -58,12 +58,3 @@ Develop the embedded software on Arduino + PC connected through the serial line,
 
 For any aspect not specified, you are free to choose the approach you consider more useful or valuable.
 
-The Deliverable
-
-The deliverable consists in a zipped folder assignment-02.zip including two subfolders:
-src folder, including 
-two further folders: arduino and java, the former must contain a smart_cm folder, containing the Arduino project, and the latter the sources of the Java program
-doc folder, including: 
-a brief report describing the solution, in particular the diagram of the FSMs and the  representation of the schema/breadboard – using tools such as TinkerCad or Fritzing 
-a short video (or the link to a video on the cloud) demonstrating the system
-
