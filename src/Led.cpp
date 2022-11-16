@@ -1,15 +1,15 @@
-#include "SmartLight.h"
+#include "Led.h"
 #include "Arduino.h"
 
-SmartLight::SmartLight(int pin){
+Led::Led(int pin){
   this->pin = pin;
   pinMode(pin,OUTPUT);
 }
 
-void SmartLight::switchOn(){
+void Led::switchOn(){
   digitalWrite(pin,HIGH);
 }
 
-void SmartLight::switchOff(){
+void Led::switchOff(){
   digitalWrite(pin,LOW);
 };
