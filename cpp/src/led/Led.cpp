@@ -2,19 +2,15 @@
 
 Led::Led(int pin){
     this->pin = pin;
-    this->lightIntensity = MIN_LED_INTENSITY;
+    this->state = OFF;
 }
 
 bool Led::isOn() {
-    return lightIntensity > MIN_LED_INTENSITY;
+    return state == ON;
 }
 
 bool Led::isOff() {
-    return lightIntensity <= MIN_LED_INTENSITY;
-}
-
-int Led::getCurrIntensity() {
-    return lightIntensity;
+    return state == OFF;
 }
 
 int Led::getPin() {
@@ -22,25 +18,9 @@ int Led::getPin() {
 }
 
 void Led::turnOn() {
-    lightIntensity = MAX_LED_INTENSITY;
+    state = ON;
 }
 
 void Led::turnOff() {
-    lightIntensity = MIN_LED_INTENSITY;
-}
-
-void Led::increaseIntensity(int intensity) {
-    int newIntensity = lightIntensity + intensity;
-    lightIntensity = MAX_LED_INTENSITY;
-    if (newIntensity <= MAX_LED_INTENSITY) {
-        lightIntensity = newIntensity;
-    }
-}
-
-void Led::decreaseIntensity(int intensity) {
-    int newIntensity = lightIntensity - intensity;
-    lightIntensity = MIN_LED_INTENSITY;
-    if (newIntensity >= MIN_LED_INTENSITY) {
-        lightIntensity = newIntensity;
-    }
+    state = OFF;
 }

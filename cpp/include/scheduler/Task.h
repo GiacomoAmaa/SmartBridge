@@ -4,8 +4,13 @@
 class Task {
     int myPeriod;
     int timeElapsed;
+    int totalTimeElapsed;
 
     protected:
+        int getTotalTimeElapsed() {
+            return totalTimeElapsed;
+        }
+
         void setPeriod(int period){
             myPeriod = period;
         }
@@ -14,11 +19,13 @@ class Task {
         virtual void init(int period){
             setPeriod(period);
             timeElapsed = 0;
+            totalTimeElapsed = 0;
         }
 
         virtual void tick() = 0;
 
         bool updateAndCheckTime(int basePeriod){
+            totalTimeElapsed += basePeriod;
             timeElapsed += basePeriod;
             if (timeElapsed >= myPeriod){
                 timeElapsed = 0;
