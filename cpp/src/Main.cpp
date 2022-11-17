@@ -1,4 +1,5 @@
-#include "Scheduler.h"
+#include "Arduino.h"
+#include "scheduler/Scheduler.h"
 
 Scheduler taskmgr;
 
