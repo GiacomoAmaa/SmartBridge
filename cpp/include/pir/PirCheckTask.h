@@ -4,6 +4,8 @@
 #include "scheduler/Task.h"
 #include "utility/AlarmState.h"
 
+#define CALIBRATION_TIME 10
+
 class PirCheckTask : public Task {
     AlarmState* currState = nullptr;
     bool detected = false;

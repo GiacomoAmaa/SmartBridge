@@ -14,6 +14,7 @@ bool PirCheckTask::movementDetected() {
 void PirCheckTask::init(int period){
     Task::init(period);
     PirView::setupPin(pirPin, IN);
+    PirView::calibrate(CALIBRATION_TIME);
 }
 
 void PirCheckTask::tick() {
