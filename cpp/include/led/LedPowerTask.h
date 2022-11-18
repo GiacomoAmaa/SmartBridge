@@ -6,7 +6,6 @@
 #include "../utility/AlarmState.h"
 
 #define BLINK_TIME 2000
-#define PERIOD 250
 
 class LedPowerTask : public Task {
     AlarmState* currState = nullptr;
@@ -36,7 +35,7 @@ class LedPowerTask : public Task {
 
     public:
         LedPowerTask(AlarmState* currState, Led* leds, int nleds);
-        void init();
+        void init(int period);
         void tick();
 };
 

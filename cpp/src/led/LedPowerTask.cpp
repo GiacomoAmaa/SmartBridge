@@ -8,8 +8,8 @@ LedPowerTask::LedPowerTask(AlarmState* currState, Led* leds, int nleds){
     this->nleds=nleds;
 }
 
-void LedPowerTask::init(){
-    Task::init(PERIOD);
+void LedPowerTask::init(int period){
+    Task::init(period);
     for (int i=0; i<nleds; i++) {
         LedView::setupPin(leds[i].getPin(), OUT);
     }
