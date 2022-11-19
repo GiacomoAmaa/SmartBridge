@@ -1,13 +1,23 @@
 package GUI;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import comunication.SerialCommChannel;
+import jssc.SerialPortList;
 
 import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 
 public final class SmartBridgeGUI extends JFrame {
@@ -17,53 +27,69 @@ public final class SmartBridgeGUI extends JFrame {
 	/**
 	 * Stores the screen information (resolution, size of each tile, etc).
 	 */
-	public static final Screen GAME_SCREEN = new ScreenHandler();
+	public static final Screen SCREEN = new ScreenHandler();
 	
-	private final JLabel display = new JLabel();
-	private final JButton stop = new JButton("stop");
-	private final JButton up = new JButton("up");
-	private final JButton down = new JButton("down");
-	 
+	private final JPanel northPanel = new JPanel();
+	private final JComboBox<String> ports = new JComboBox<>();
+	private final JButton connect = new JButton("Connect");
+
 	private SerialCommChannel serialChannel;
 	 
 	public SmartBridgeGUI() {
-	    this.setSize(GAME_SCREEN.getWidth(), GAME_SCREEN.getHeight());
-	    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-	    final JPanel panel = new JPanel();
-	    panel.add(display);
-	    panel.add(up);
-	    panel.add(down);
-	    panel.add(stop);
-	    this.getContentPane().add(panel);
+		initializeFrame();
+		initializeNorthPanel();
+		initializeGraph();
 	    this.setVisible(true);
-	    try {
-	    	this.serialChannel = new SerialCommChannel("COM3", 9600);
-	    } catch(Exception e1) {
-	    	e1.printStackTrace();
-	    }
-	    up.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(ActionEvent e) {
-	    		try {
-	    			serialChannel.receiveMsg();
-	    		} catch (InterruptedException e1) {
-	    			// TODO Auto-generated catch block
-	    			e1.printStackTrace();
-	    		}
+	}
+
+	private void initializeFrame() {
+		this.setTitle("Smart Bridge GUI");
+	    this.setSize(SCREEN.getWidth(), SCREEN.getHeight());
+	    this.setLayout(new BorderLayout());
+	    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	private void initializeNorthPanel() {
+	    this.add(northPanel, BorderLayout.NORTH);
+	    northPanel.add(ports);
+	    northPanel.add(connect);
+	    String[] portNames = SerialPortList.getPortNames();
+		for (int i = 0; i < portNames.length; i++){
+		    ports.addItem(portNames[i]);
+		}
+		connect.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean portSet = true;
+				if (connect.getText().equals("Connect")) {
+					try {
+						serialChannel = new SerialCommChannel(ports.getSelectedItem().toString(), 9600);
+					} catch (Exception e1) {
+						portSet = false;
+					}
+					if(portSet) {
+						connect.setText("Stop Connection");
+						ports.setEnabled(false);
+					}
+				} else {
+					
+				}
 			}
-	    });
-	    down.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(final ActionEvent e) {
-	    		// TODO Auto-generated method stub
-	        }
-	    });
-	    stop.addActionListener(new ActionListener() {
-	    	@Override
-	    	public void actionPerformed(final ActionEvent e) {
-	    		// TODO Auto-generated method stub
-	   	    }
-	    });
+			
+		});
+	}
+	
+	private void initializeGraph() {
+		//final XYSeries luminosity = new XYSeries("Luminosity");
+		final XYSeries waterLevel = new XYSeries("Water Level");
+		final XYSeriesCollection dataset = new XYSeriesCollection();
+		//dataset.addSeries(luminosity);
+		dataset.addSeries(waterLevel);
+		JFreeChart chart = ChartFactory.createXYLineChart("Water Level","Time (s)", "Distance (cm)", dataset);
+		this.add(new ChartPanel(chart), BorderLayout.CENTER);
+		NumberAxis time = new NumberAxis();
+		
+		
 	}
 }
 
