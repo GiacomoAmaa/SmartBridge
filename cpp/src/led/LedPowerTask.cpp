@@ -1,6 +1,8 @@
+#include "led/LedPowerTask.h"
 #include "led/Led.h"
 #include "led/LedView.h"
-#include "led/LedPowerTask.h"
+#include "pir/PirCheckTask.h"
+#include "light_sensor/LightCheckTask.h"
 
 LedPowerTask::LedPowerTask(AlarmState* currState, int* ledPins, int nleds){
     this->currState=currState;
@@ -12,8 +14,10 @@ LedPowerTask::LedPowerTask(AlarmState* currState, int* ledPins, int nleds){
     }
 }
 
-void LedPowerTask::init(int period){
+void LedPowerTask::init(LightCheckTask* light, PirCheckTask* detector, int period){
     Task::init(period);
+    this->light=light;
+    this->detector=detector;
     for (int i=0; i<nleds; i++) {
         LedView::setupPin(leds[i].getPin(), OUT);
     }
@@ -21,7 +25,6 @@ void LedPowerTask::init(int period){
 }
 
 void LedPowerTask::tick(){
-    updateLeds();
     switch(*currState) {
         case ALARM:
             blinkInitTime = 0;
@@ -30,15 +33,16 @@ void LedPowerTask::tick(){
             leds[2].turnOn();
             break;
         case PREALARM:
-            // leds[0] - Smart light working
+            smartLighting(&leds[0]);
             leds[1].turnOn();
-            blinkLed(&leds[2], BLINK_TIME);
+            blinkLed(&leds[2]);
             break;
         default:
             blinkInitTime = 0;
-            // leds[0] - Smart light working
+            smartLighting(&leds[0]);
             leds[1].turnOn();
             leds[2].turnOff();
             break;
     }
+    updateLeds();
 }
