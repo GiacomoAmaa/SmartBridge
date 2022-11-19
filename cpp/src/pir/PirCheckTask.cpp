@@ -2,12 +2,11 @@
 #include "pir/PirView.h"
 #include "utility/AlarmState.h"
 
-PirCheckTask::PirCheckTask(AlarmState* currState, int pirPin) {
-    this->currState=currState;
+PirCheckTask::PirCheckTask(int pirPin) {
     this->pirPin=pirPin;
 }
 
-bool PirCheckTask::movementDetected() {
+bool PirCheckTask::isMovementDetected() {
     return detected;
 }
 

@@ -4,7 +4,7 @@
 #define DELAY_HIGH 3
 #define DELAY_LOW 5
 
-#include "../utility/BaseView.h"
+#include "utility/BaseView.h"
 
 class SonarView : public BaseView {
     public:

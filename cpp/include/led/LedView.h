@@ -1,7 +1,7 @@
 #ifndef __LED_VIEW__
 #define __LED_VIEW__
 
-#include "../utility/BaseView.h"
+#include "utility/BaseView.h"
 
 class LedView : public BaseView{
     public:

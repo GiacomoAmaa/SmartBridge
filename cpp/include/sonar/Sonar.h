@@ -9,7 +9,7 @@ class Sonar {
         Sonar(int trigPin, int echoPin);
         int getTrigPin();
         int getEchoPin();
-        float calculateDistance(float echoSig);
+        float calculateDistance(float rawVal);
 };
 
 #endif

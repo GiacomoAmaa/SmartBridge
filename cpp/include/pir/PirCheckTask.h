@@ -7,13 +7,12 @@
 #define CALIBRATION_TIME 10
 
 class PirCheckTask : public Task {
-    AlarmState* currState = nullptr;
     bool detected = false;
     int pirPin;
 
     public:
-        PirCheckTask(AlarmState* currState, int pirPin);
-        bool movementDetected();
+        PirCheckTask(int pirPin);
+        bool isMovementDetected();
         void init(int period);
         void tick();
 };

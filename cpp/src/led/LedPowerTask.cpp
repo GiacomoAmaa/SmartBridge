@@ -2,10 +2,14 @@
 #include "led/LedView.h"
 #include "led/LedPowerTask.h"
 
-LedPowerTask::LedPowerTask(AlarmState* currState, Led* leds, int nleds){
+LedPowerTask::LedPowerTask(AlarmState* currState, int* ledPins, int nleds){
     this->currState=currState;
-    this->leds=leds;
     this->nleds=nleds;
+    
+    this->leds = (Led*)malloc(sizeof(Led)*nleds);
+    for (int i=0; i<nleds; i++){
+        leds[i] = Led(ledPins[i]);
+    }
 }
 
 void LedPowerTask::init(int period){

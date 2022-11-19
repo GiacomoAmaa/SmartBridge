@@ -2,8 +2,8 @@
 #define __LED_TASK__
 
 #include "Led.h"
-#include "../scheduler/Task.h"
-#include "../utility/AlarmState.h"
+#include "scheduler/Task.h"
+#include "utility/AlarmState.h"
 
 #define BLINK_TIME 2000
 
@@ -34,7 +34,7 @@ class LedPowerTask : public Task {
     }
 
     public:
-        LedPowerTask(AlarmState* currState, Led* leds, int nleds);
+        LedPowerTask(AlarmState* currState, int* ledPins, int nleds);
         void init(int period);
         void tick();
 };

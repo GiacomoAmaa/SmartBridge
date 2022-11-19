@@ -13,9 +13,9 @@ int Sonar::getEchoPin() {
     return echoPin;
 }
 
-float Sonar::calculateDistance(float echoSig) {
+float Sonar::calculateDistance(float rawVal) {
     const float vs = 331.45 + 0.62*20;
-    float t = echoSig / 1000.0 / 1000.0 / 2;
+    float t = rawVal / 1000.0 / 1000.0 / 2;
     float d = t*vs;
     return d;
 }
