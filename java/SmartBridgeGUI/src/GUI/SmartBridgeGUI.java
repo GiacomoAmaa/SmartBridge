@@ -5,6 +5,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTable;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -30,15 +32,22 @@ public final class SmartBridgeGUI extends JFrame {
 	public static final Screen SCREEN = new ScreenHandler();
 	
 	private final JPanel northPanel = new JPanel();
+	private final JPanel southPanel = new JPanel();
 	private final JComboBox<String> ports = new JComboBox<>();
 	private final JButton connect = new JButton("Connect");
+	private final JButton takeControl = new JButton("Take valve control");
+	private final JSlider valveOpening = new JSlider();
+	private JTable statesTable;
+
+	private final XYSeriesCollection dataset = new XYSeriesCollection();
 
 	private SerialCommChannel serialChannel;
 	 
 	public SmartBridgeGUI() {
 		initializeFrame();
 		initializeNorthPanel();
-		initializeGraph();
+		initializeGraphs();
+		initializeSouthPanel();
 	    this.setVisible(true);
 	}
 
@@ -46,6 +55,7 @@ public final class SmartBridgeGUI extends JFrame {
 		this.setTitle("Smart Bridge GUI");
 	    this.setSize(SCREEN.getWidth(), SCREEN.getHeight());
 	    this.setLayout(new BorderLayout());
+	    this.setResizable(false);
 	    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
@@ -72,24 +82,50 @@ public final class SmartBridgeGUI extends JFrame {
 						ports.setEnabled(false);
 					}
 				} else {
-					
+					serialChannel.close();
+					ports.setEnabled(true);
+					connect.setText("Connect");
 				}
 			}
 			
 		});
 	}
 	
-	private void initializeGraph() {
-		//final XYSeries luminosity = new XYSeries("Luminosity");
-		final XYSeries waterLevel = new XYSeries("Water Level");
-		final XYSeriesCollection dataset = new XYSeriesCollection();
-		//dataset.addSeries(luminosity);
-		dataset.addSeries(waterLevel);
-		JFreeChart chart = ChartFactory.createXYLineChart("Water Level","Time (s)", "Distance (cm)", dataset);
+	private void initializeGraphs() {
+		dataset.addSeries(new XYSeries("Luminosity"));
+		dataset.addSeries(new XYSeries("Water Level"));
+		dataset.addSeries(new XYSeries("Valve Opening"));
+		JFreeChart chart = ChartFactory.createXYLineChart("Statistics Monitoring",
+				"Time (s)", "Percentage %", dataset);
 		this.add(new ChartPanel(chart), BorderLayout.CENTER);
-		NumberAxis time = new NumberAxis();
-		
-		
+
+	}
+
+	private void initializeSouthPanel() {
+		final String[] colnames = {"State","Lighting","Remote"};
+		final String[][] data = {{"State","Lighting","Remote"},{"NO DANGER","ON","OFF"}};
+	    this.add(southPanel, BorderLayout.SOUTH);
+	    southPanel.add(takeControl);
+	    southPanel.add(valveOpening);
+	    valveOpening.setEnabled(false);
+	    statesTable = new JTable(data,colnames);
+	    statesTable.setEnabled(false);
+	    southPanel.add(statesTable);
+	    takeControl.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!takeControl.getText().equals("Done")) {
+					takeControl.setText("Done");
+					valveOpening.setEnabled(true);
+					statesTable.setValueAt("ON", 1, 2);
+				} else {
+					takeControl.setText("Take valve control");
+					valveOpening.setEnabled(false);
+					statesTable.setValueAt("OFF", 1, 2);
+				}
+			}
+	    });
+
 	}
 }
 
