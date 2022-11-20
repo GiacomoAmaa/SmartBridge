@@ -4,14 +4,21 @@
 #include "Led.h"
 #include "scheduler/Task.h"
 #include "utility/AlarmState.h"
+#include "pir/PirCheckTask.h"
+#include "light_sensor/LightCheckTask.h"
 
 #define BLINK_TIME 2000
+#define LIGHT_SENSITIVITY 100
+#define TIME_INACTIVITY 5000
 
 class LedPowerTask : public Task {
     AlarmState* currState = nullptr;
+    PirCheckTask* detector = nullptr;
+    LightCheckTask* light = nullptr;
     Led* leds = nullptr;
     int nleds = 0;
     int blinkInitTime = 0;
+    int lastDetecTime = 0;
 
     void updateLeds() {
         for (int i=0; i<nleds; i++){
@@ -19,10 +26,10 @@ class LedPowerTask : public Task {
         }
     }
 
-    void blinkLed(Led* led, int blinkTime) {
+    void blinkLed(Led* led) {
         blinkInitTime = blinkInitTime <= 0 ? this->getTotalTimeElapsed() : blinkInitTime;
         int blinkTimeElaps = this->getTotalTimeElapsed() - blinkInitTime;
-        if (blinkTimeElaps <= blinkTime) {
+        if (blinkTimeElaps <= BLINK_TIME) {
             if (led->isOff()) {
                 led->turnOn();
             } else if (led->isOn()) {
@@ -33,9 +40,22 @@ class LedPowerTask : public Task {
         }
     }
 
+    void smartLighting(Led* led) {
+        double currLight = light->getLightVoltage();
+        if (currLight < LIGHT_SENSITIVITY || detector->isMovementDetected()) {
+            lastDetecTime = this->getTotalTimeElapsed();
+            led->turnOn();
+            return;
+        }
+        int timeElapsFromLastDet = this->getTotalTimeElapsed() - lastDetecTime;
+        if (timeElapsFromLastDet >= TIME_INACTIVITY) {
+            led->turnOff();
+        }
+    }
+
     public:
         LedPowerTask(AlarmState* currState, int* ledPins, int nleds);
-        void init(int period);
+        void init(LightCheckTask* light, PirCheckTask* detector, int period);
         void tick();
 };
 
