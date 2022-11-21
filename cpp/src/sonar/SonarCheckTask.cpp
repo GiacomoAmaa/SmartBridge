@@ -7,6 +7,10 @@ SonarCheckTask::SonarCheckTask(AlarmState* currState, Sonar* sonar) {
     this->sonar=sonar;
 }
 
+int SonarCheckTask::getCurrentWaterLvl() {
+    return currWaterLevel;
+}
+
 void SonarCheckTask::init() {
     Task::init(NORMAL_PERIOD);
     SonarView::setupPin(sonar->getTrigPin(), sonar->getEchoPin());

@@ -1,10 +1,14 @@
 #ifndef __BUTTON__
 #define __BUTTON__
 
-class Button {
- 
-public: 
-  virtual bool isPressed() = 0;
+#include "utility/BaseView.h"
+
+class Button : public BaseView {
+    int pin;
+
+    public: 
+        Button(int pin);
+        bool isPressed();
 };
 
 #endif

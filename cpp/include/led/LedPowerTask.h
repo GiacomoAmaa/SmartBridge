@@ -2,6 +2,7 @@
 #define __LED_TASK__
 
 #include "Led.h"
+#include "LedView.h"
 #include "scheduler/Task.h"
 #include "utility/AlarmState.h"
 #include "pir/PirCheckTask.h"

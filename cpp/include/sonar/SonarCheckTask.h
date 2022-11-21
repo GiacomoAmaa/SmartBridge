@@ -8,6 +8,7 @@
 
 //#define MAX_WATER_LEVEL 2
 //#define MIN_WATER_LEVEL 400
+#define WATER_LEVEL_MAX 0.0
 #define WATER_LEVEL_ALARM 10.0
 #define WATER_LEVEL_PREALARM 20.0
 
@@ -34,6 +35,7 @@ class SonarCheckTask : public Task{
 
     public:
         SonarCheckTask(AlarmState* currState, Sonar* sonar);
+        int getCurrentWaterLvl();
         void init();
         void tick();
 };
