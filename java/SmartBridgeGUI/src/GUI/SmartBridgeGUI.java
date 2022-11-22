@@ -15,6 +15,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import comunication.SerialCommChannel;
+import comunication.StringParser;
 import jssc.SerialPortList;
 
 import java.awt.event.ActionEvent;
@@ -42,6 +43,8 @@ public final class SmartBridgeGUI extends JFrame {
 	private final JButton takeControl = new JButton("Take valve control");
 	private final JSlider valveOpening = new JSlider();
 	private JTable statesTable;
+	
+	private Thread update;
 
 	/**
 	 * Graph data to plot
@@ -52,6 +55,7 @@ public final class SmartBridgeGUI extends JFrame {
 	 * Class to handle serial communication
 	 */
 	private SerialCommChannel serialChannel;
+	private final StringParser parser = new StringParser();
 	 
 	public SmartBridgeGUI() {
 		this.initializeFrame();
@@ -61,6 +65,7 @@ public final class SmartBridgeGUI extends JFrame {
 		this.initializeNorthPanel();
 		this.initializeGraph();
 		this.initializeSouthPanel();
+		this.initThread();
 	    this.setVisible(true);
 	}
 
@@ -99,8 +104,9 @@ public final class SmartBridgeGUI extends JFrame {
 	}
 	
 	private void initializeTable() {
-		final String[] colnames = {"State","Lighting","Remote"};
-		final String[][] data = {{"NO DANGER","ON","Auto"}};
+		final String[] colnames = {"State","Light","Valve Control"};
+		final String[][] data = {{parser.getAlertState(),
+			parser.getLighting(), parser.getValveControl()}};
 	    statesTable = new JTable(data,colnames);
 	    statesTable.setEnabled(false);
 	}
@@ -121,11 +127,13 @@ public final class SmartBridgeGUI extends JFrame {
 				if(!takeControl.getText().equals("Back to Auto")) {
 					takeControl.setText("Back to Auto");
 					valveOpening.setEnabled(true);
-					statesTable.setValueAt("Remote", 0, 2);
+					statesTable.setValueAt("remote", 0, 2);
+					parser.setValveControl("remote");
 				} else {
 					takeControl.setText("Take valve control");
 					valveOpening.setEnabled(false);
-					statesTable.setValueAt("Auto", 0, 2);
+					statesTable.setValueAt("auto", 0, 2);
+					parser.setValveControl("auto");
 				}
 			}
 	    });
@@ -137,17 +145,20 @@ public final class SmartBridgeGUI extends JFrame {
 					try {
 						serialChannel = new SerialCommChannel(ports.getSelectedItem().toString(),
 								9600);
+						
 					} catch (Exception e1) {
 						portSet = false;
 					}
 					if(portSet) {
 						connect.setText("Stop Connection");
+						update.start();
 						ports.setEnabled(false);
 					}
 				} else {
 					serialChannel.close();
 					ports.setEnabled(true);
 					connect.setText("Connect");
+					cleanChart();
 				}
 			}
 			
@@ -159,5 +170,35 @@ public final class SmartBridgeGUI extends JFrame {
 			}
 		});
 	}
+	
+	private void initThread(){
+		update = new Thread() {
+			@Override
+			public void run() {
+				boolean validData = true;
+				int x = 0;
+				while(validData) {
+					try {
+						parser.parse(serialChannel.receiveMsg());
+						dataset.getSeries(0).add(x, parser.getLightLevel());
+						dataset.getSeries(0).add(x, parser.getWaterLevel());
+						dataset.getSeries(0).add(x, parser.getValveOpening());
+					} catch (Exception e) {
+						validData = false;
+						e.printStackTrace();
+					}
+					x++;
+				}
+				serialChannel.close();
+			}
+		};
+	}
+	
+	private void cleanChart() {
+		for (int i = 0; i< dataset.getSeriesCount(); i++) {
+			dataset.getSeries(i).clear();
+		}
+	}
+	
 }
 
