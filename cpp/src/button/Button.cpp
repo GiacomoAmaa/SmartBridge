@@ -1,11 +1,14 @@
 #include "button/Button.h"
-#include "Arduino.h"
+#include "button/ButtonView.h"
 
 Button::Button(int pin) {
     this->pin=pin;
+}
+
+void Button::init() {
     BaseView::setupPin(pin, IN);
 }
 
 bool Button::isPressed() {
-    return digitalRead(pin);
+    return ButtonView::checkPress(pin);
 }
