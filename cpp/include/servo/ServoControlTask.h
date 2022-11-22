@@ -19,6 +19,7 @@ class ServoControlTask : public Task {
     Button* inputBtn = nullptr;
     bool userControlled = false;
     int currAngle = 0;
+    int pin;
 
     int angleFromRotation(int rotation) {
         return VALVE_MAX * rotation / POT_MAX_VALUE;
@@ -29,9 +30,9 @@ class ServoControlTask : public Task {
     }
 
     public:
-        ServoControlTask(AlarmState* currState, ServoView* servoM, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot);
+        ServoControlTask(AlarmState* currState, int pin);
         void angle(int angle);
-        void init(int period);
+        void init(SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, int period);
         void tick();
 };
 

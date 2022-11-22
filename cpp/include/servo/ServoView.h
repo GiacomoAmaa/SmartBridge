@@ -5,11 +5,9 @@
 
 class ServoView {
     Servo motor;
-    int pin;
 
     public:
-        ServoView(int pin);
-        void setPosition(int angle);
+        void setPosition(int pin, int angle);
 };
 
 #endif
