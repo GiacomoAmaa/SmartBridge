@@ -6,5 +6,6 @@ void LCDView::init() {
 }
 
 void LCDView::printScreen(char* message) {
+    lcd.setCursor(0, 0);
     lcd.print(message);
 }

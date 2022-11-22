@@ -2,9 +2,10 @@
 #define __SONAR_TASK__
 
 #include "Sonar.h"
-#include "../scheduler/Task.h"
-#include "../utility/AlarmState.h"
-#include "../utility/BaseView.h"
+#include "scheduler/Task.h"
+#include "lcd/LCD.h"
+#include "utility/AlarmState.h"
+#include "utility/BaseView.h"
 
 //#define MAX_WATER_LEVEL 2
 //#define MIN_WATER_LEVEL 400
@@ -16,10 +17,14 @@
 #define PREALARM_PERIOD 30
 #define ALARM_PERIOD 15
 
+#define MESSAGE_LENGTH 20
+
 class SonarCheckTask : public Task{
     AlarmState* currState = nullptr;
     Sonar* sonar = nullptr;
+    LCD* display = nullptr;
     int currWaterLevel = 0;
+    char* message = nullptr;
 
     void updateWaterLevel(float distance) {
         if (distance >= WATER_LEVEL_PREALARM && distance < WATER_LEVEL_ALARM) {
@@ -36,7 +41,7 @@ class SonarCheckTask : public Task{
     public:
         SonarCheckTask(AlarmState* currState, Sonar* sonar);
         int getCurrentWaterLvl();
-        void init();
+        void init(LCD* display);
         void tick();
 };
 

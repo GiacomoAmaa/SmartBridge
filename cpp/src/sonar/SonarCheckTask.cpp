@@ -11,8 +11,10 @@ int SonarCheckTask::getCurrentWaterLvl() {
     return currWaterLevel;
 }
 
-void SonarCheckTask::init() {
+void SonarCheckTask::init(LCD* display) {
     Task::init(NORMAL_PERIOD);
+    this->display=display;
+    message = (char*)malloc(sizeof(char)*MESSAGE_LENGTH);
     SonarView::setupPin(sonar->getTrigPin(), sonar->getEchoPin());
 }
 
@@ -23,14 +25,20 @@ void SonarCheckTask::tick() {
         case 1:
             *currState = PREALARM;
             Task::setPeriod(PREALARM_PERIOD);
+            sprintf(message, "Water: %.1fcm", currWaterLevel);
+            display->print(message);
             break;
         case 2:
             *currState = ALARM;
             Task::setPeriod(ALARM_PERIOD);
+            sprintf(message, "Water: %.1fcm", currWaterLevel);
+            display->print(message);
             break;
         default:
             *currState = NORMAL;
             Task::setPeriod(NORMAL_PERIOD);
+            sprintf(message, "");
+            display->print(message);
             break;
     }
 }

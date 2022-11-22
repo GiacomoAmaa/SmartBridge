@@ -15,6 +15,10 @@ class BaseView {
                 pinMode(pin, OUTPUT);
             }
         }
+
+        static void printLog(char* message) {
+            Serial.println(message);
+        }
 };
 
 #endif
