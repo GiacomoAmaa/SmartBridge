@@ -36,6 +36,11 @@ public final class SmartBridgeGUI extends JFrame {
 	public static final Screen SCREEN = new ScreenHandler();
 	
 	/**
+	 * Finite states machine implemented on arduino clock time
+	 */
+	private static final double FSM_CLOCK_TIME = 0.15;
+	
+	/**
 	 * GUI components
 	 */
 	private final JPanel northPanel = new JPanel();
@@ -44,6 +49,7 @@ public final class SmartBridgeGUI extends JFrame {
 	private final JButton connect = new JButton("Connect");
 	private final JButton search = new JButton("Search Ports");
 	private final JButton takeControl = new JButton("Take valve control");
+	private final JButton confirm = new JButton("Confirm");
 	private final JSlider valveOpening = new JSlider();
 	private JTable statesTable;
 	
@@ -62,6 +68,9 @@ public final class SmartBridgeGUI extends JFrame {
 	private SerialCommChannel serialChannel;
 	private final StringParser parser = new StringParserImpl();
 	
+	private boolean threadRun = false;
+	private double timeElapsed = 0;
+	
 	/**
 	 * Initializes the GUI
 	 */
@@ -75,6 +84,7 @@ public final class SmartBridgeGUI extends JFrame {
 		this.initializeGraph();
 		this.initializeSouthPanel();
 		this.initThread();
+		update.start();
 	    this.setVisible(true);
 	}
 
@@ -129,6 +139,7 @@ public final class SmartBridgeGUI extends JFrame {
 	    this.add(southPanel, BorderLayout.SOUTH);
 	    southPanel.add(takeControl);
 	    southPanel.add(valveOpening);
+	    southPanel.add(confirm);
 	    southPanel.add(pane);
 	    takeControl.setEnabled(false);
 
@@ -161,17 +172,20 @@ public final class SmartBridgeGUI extends JFrame {
 	 */
 	private void initializeButtons() {
 	    valveOpening.setEnabled(false);
+	    confirm.setEnabled(false);
 	    takeControl.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!takeControl.getText().equals("Back to Auto")) {
 					takeControl.setText("Back to Auto");
 					valveOpening.setEnabled(true);
+					confirm.setEnabled(true);
 					statesTable.setValueAt("remote", 0, 2);
 					serialChannel.sendMsg("remote");
 				} else {
 					takeControl.setText("Take valve control");
 					valveOpening.setEnabled(false);
+					confirm.setEnabled(false);
 					statesTable.setValueAt("auto", 0, 2);
 					serialChannel.sendMsg("auto");
 				}
@@ -190,18 +204,20 @@ public final class SmartBridgeGUI extends JFrame {
 						portSet = false;
 					}
 					if(portSet) {
+						threadRun = true;
 						connect.setText("Stop Connection");
-						//update.start();
 						ports.setEnabled(false);
 						takeControl.setEnabled(true);
 					}
 				} else {
 					serialChannel.close();
-					ports.setEnabled(true);
-					connect.setText("Connect");
 					cleanChart();
+					timeElapsed = 0;
+					connect.setText("Connect");
+					ports.setEnabled(true);
 					takeControl.setEnabled(false);
 					valveOpening.setEnabled(false);
+					confirm.setEnabled(false);
 				}
 			}
 			
@@ -210,6 +226,12 @@ public final class SmartBridgeGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				scanPorts();
+			}
+		});
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				serialChannel.sendMsg(String.valueOf(valveOpening.getValue()));
 			}
 		});
 	}
@@ -221,33 +243,29 @@ public final class SmartBridgeGUI extends JFrame {
 		update = new Thread() {
 			@Override
 			public void run() {
-				boolean validData = true;
-				int x = 0;
-				while(validData) {
+				while(threadRun) {
 					try {
 						dataRead = parser.parse(serialChannel.receiveMsg());
-						update(x);
+						update();
 					} catch (Exception e) {
-						validData = false;
+						threadRun = false;
 						e.printStackTrace();
 					}
-					x++;
+					timeElapsed += SmartBridgeGUI.FSM_CLOCK_TIME;
 				}
-				serialChannel.close();
 			}
 		};
 	}
 	
 	/**
 	 * Updates the GUI data at a given instant
-	 * @param x instant of time
 	 */
-	private void update(int x) {
-		dataset.getSeries(0).add(x, Integer.parseInt(dataRead
+	private void update() {
+		dataset.getSeries(0).add(timeElapsed, Integer.parseInt(dataRead
 				.get(DataRead.LIGHT_LEVEL)));
-		dataset.getSeries(1).add(x, Integer.parseInt(dataRead
+		dataset.getSeries(1).add(timeElapsed, Integer.parseInt(dataRead
 				.get(DataRead.WATER_LEVEL)));
-		dataset.getSeries(2).add(x, Integer.parseInt(dataRead
+		dataset.getSeries(2).add(timeElapsed, Integer.parseInt(dataRead
 				.get(DataRead.VALVE_OPENING)));
 		statesTable.setValueAt(dataRead.get(DataRead.ALERT_STATE), 0, 0);
 		statesTable.setValueAt(dataRead.get(DataRead.LIGHTING), 0, 1);
