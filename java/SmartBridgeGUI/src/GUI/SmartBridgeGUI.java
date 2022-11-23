@@ -14,14 +14,17 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import comunication.DataRead;
 import comunication.SerialCommChannel;
 import comunication.StringParser;
+import comunication.StringParserImpl;
 import jssc.SerialPortList;
 
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public final class SmartBridgeGUI extends JFrame {
 	
@@ -51,13 +54,19 @@ public final class SmartBridgeGUI extends JFrame {
 	 */
 	private final XYSeriesCollection dataset = new XYSeriesCollection();
 	
+	private Map<DataRead, String> dataRead;
+	
 	/**
-	 * Class to handle serial communication
+	 * Classes to handle serial communication
 	 */
 	private SerialCommChannel serialChannel;
-	private final StringParser parser = new StringParser();
-	 
+	private final StringParser parser = new StringParserImpl();
+	
+	/**
+	 * Initializes the GUI
+	 */
 	public SmartBridgeGUI() {
+		this.initData();
 		this.initializeFrame();
 		this.scanPorts();
 		this.initializeButtons();
@@ -69,6 +78,18 @@ public final class SmartBridgeGUI extends JFrame {
 	    this.setVisible(true);
 	}
 
+	/**
+	 * Restores the default values in the data structure that contains read data
+	 */
+	private void initData() {
+		dataRead = Map.of(DataRead.ALERT_STATE, "normal", DataRead.LIGHTING, "off",
+				DataRead.VALVE_CONTROL, "auto", DataRead.WATER_LEVEL, "0",
+				DataRead.LIGHT_LEVEL, "0", DataRead.VALVE_OPENING, "0");
+	}
+	
+	/**
+	 * Basic frame's initialization procedure
+	 */
 	private void initializeFrame() {
 		this.setTitle("Smart Bridge GUI");
 	    this.setSize(SCREEN.getWidth(), SCREEN.getHeight());
@@ -77,6 +98,9 @@ public final class SmartBridgeGUI extends JFrame {
 	    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * Connects all the elements of the north panel and locates it on the frame
+	 */
 	private void initializeNorthPanel() {
 	    this.add(northPanel, BorderLayout.NORTH);
 	    northPanel.add(search);
@@ -84,6 +108,9 @@ public final class SmartBridgeGUI extends JFrame {
 	    northPanel.add(connect);
 	}
 	
+	/**
+	 * Creates a chart containing the significant data to be displayed
+	 */
 	private void initializeGraph() {
 		dataset.addSeries(new XYSeries("Luminosity"));
 		dataset.addSeries(new XYSeries("Water Level"));
@@ -93,6 +120,9 @@ public final class SmartBridgeGUI extends JFrame {
 		this.add(new ChartPanel(chart), BorderLayout.CENTER);
 	}
 
+	/**
+	 * Connects all the elements of the south panel and locates it on the frame
+	 */
 	private void initializeSouthPanel() {
 		final JScrollPane pane  = new JScrollPane(statesTable);
 		pane.setPreferredSize(new Dimension(270,39));
@@ -100,17 +130,24 @@ public final class SmartBridgeGUI extends JFrame {
 	    southPanel.add(takeControl);
 	    southPanel.add(valveOpening);
 	    southPanel.add(pane);
+	    takeControl.setEnabled(false);
 
 	}
 	
+	/**
+	 * Creates a table displaying the most significant states
+	 */
 	private void initializeTable() {
 		final String[] colnames = {"State","Light","Valve Control"};
-		final String[][] data = {{parser.getAlertState(),
-			parser.getLighting(), parser.getValveControl()}};
+		final String[][] data = {{dataRead.get(DataRead.ALERT_STATE),
+				dataRead.get(DataRead.LIGHTING), dataRead.get(DataRead.VALVE_CONTROL)}};
 	    statesTable = new JTable(data,colnames);
 	    statesTable.setEnabled(false);
 	}
 	
+	/**
+	 * Looks for available serial ports to connect to
+	 */
 	private void scanPorts() {
 	    String[] portNames = SerialPortList.getPortNames();
 		ports.removeAllItems();
@@ -119,6 +156,9 @@ public final class SmartBridgeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Assigns each button its own function
+	 */
 	private void initializeButtons() {
 	    valveOpening.setEnabled(false);
 	    takeControl.addActionListener(new ActionListener() {
@@ -128,12 +168,12 @@ public final class SmartBridgeGUI extends JFrame {
 					takeControl.setText("Back to Auto");
 					valveOpening.setEnabled(true);
 					statesTable.setValueAt("remote", 0, 2);
-					parser.setValveControl("remote");
+					serialChannel.sendMsg("remote");
 				} else {
 					takeControl.setText("Take valve control");
 					valveOpening.setEnabled(false);
 					statesTable.setValueAt("auto", 0, 2);
-					parser.setValveControl("auto");
+					serialChannel.sendMsg("auto");
 				}
 			}
 	    });
@@ -151,14 +191,17 @@ public final class SmartBridgeGUI extends JFrame {
 					}
 					if(portSet) {
 						connect.setText("Stop Connection");
-						update.start();
+						//update.start();
 						ports.setEnabled(false);
+						takeControl.setEnabled(true);
 					}
 				} else {
 					serialChannel.close();
 					ports.setEnabled(true);
 					connect.setText("Connect");
 					cleanChart();
+					takeControl.setEnabled(false);
+					valveOpening.setEnabled(false);
 				}
 			}
 			
@@ -171,6 +214,9 @@ public final class SmartBridgeGUI extends JFrame {
 		});
 	}
 	
+	/**
+	 * Initializes the thread to read/update data
+	 */
 	private void initThread(){
 		update = new Thread() {
 			@Override
@@ -179,10 +225,8 @@ public final class SmartBridgeGUI extends JFrame {
 				int x = 0;
 				while(validData) {
 					try {
-						parser.parse(serialChannel.receiveMsg());
-						dataset.getSeries(0).add(x, parser.getLightLevel());
-						dataset.getSeries(0).add(x, parser.getWaterLevel());
-						dataset.getSeries(0).add(x, parser.getValveOpening());
+						dataRead = parser.parse(serialChannel.receiveMsg());
+						update(x);
 					} catch (Exception e) {
 						validData = false;
 						e.printStackTrace();
@@ -194,6 +238,25 @@ public final class SmartBridgeGUI extends JFrame {
 		};
 	}
 	
+	/**
+	 * Updates the GUI data at a given instant
+	 * @param x instant of time
+	 */
+	private void update(int x) {
+		dataset.getSeries(0).add(x, Integer.parseInt(dataRead
+				.get(DataRead.LIGHT_LEVEL)));
+		dataset.getSeries(1).add(x, Integer.parseInt(dataRead
+				.get(DataRead.WATER_LEVEL)));
+		dataset.getSeries(2).add(x, Integer.parseInt(dataRead
+				.get(DataRead.VALVE_OPENING)));
+		statesTable.setValueAt(dataRead.get(DataRead.ALERT_STATE), 0, 0);
+		statesTable.setValueAt(dataRead.get(DataRead.LIGHTING), 0, 1);
+		statesTable.setValueAt(dataRead.get(DataRead.VALVE_CONTROL), 0, 2);
+	}
+	
+	/**
+	 * Resets the graph data
+	 */
 	private void cleanChart() {
 		for (int i = 0; i< dataset.getSeriesCount(); i++) {
 			dataset.getSeries(i).clear();
