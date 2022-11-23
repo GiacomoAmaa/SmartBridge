@@ -15,7 +15,7 @@ void ServoControlTask::angle(int angle) {
     servoM->setPosition(pin, angle);
 }
 
-void ServoControlTask::init(SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, int period) {
+void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot) {
     Task::init(period);
     this->sonar=sonar;
     this->inputBtn=inputBtn;
@@ -32,7 +32,7 @@ void ServoControlTask::tick() {
         if (userControlled) {
             angle(angleFromRotation(pot->getRotation()));
         } else {
-            angle(angleFromWaterLvl(sonar->getCurrentWaterLvl()));
+            angle(angleFromWaterLvl(sonar->getCurrentWaterDist()));
         }
     } else {
         userControlled = false;

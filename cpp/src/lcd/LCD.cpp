@@ -3,6 +3,9 @@
 
 LCD::LCD() {
     view = new LCDView();
+}
+
+void LCD::init() {
     view->init();
 }
 

@@ -32,7 +32,7 @@ class ServoControlTask : public Task {
     public:
         ServoControlTask(AlarmState* currState, int pin);
         void angle(int angle);
-        void init(SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, int period);
+        void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot);
         void tick();
 };
 

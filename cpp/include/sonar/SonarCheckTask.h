@@ -23,10 +23,12 @@ class SonarCheckTask : public Task{
     AlarmState* currState = nullptr;
     Sonar* sonar = nullptr;
     LCD* display = nullptr;
+    double currDistance = 0.0;
     int currWaterLevel = 0;
     char* message = nullptr;
 
-    void updateWaterLevel(float distance) {
+    void updateWaterLevel(double distance) {
+        currDistance = distance;
         if (distance >= WATER_LEVEL_PREALARM && distance < WATER_LEVEL_ALARM) {
             currWaterLevel = 1;
             return;
@@ -39,8 +41,8 @@ class SonarCheckTask : public Task{
     }
 
     public:
-        SonarCheckTask(AlarmState* currState, Sonar* sonar);
-        int getCurrentWaterLvl();
+        SonarCheckTask(AlarmState* currState, int trigPin, int echoPin);
+        double getCurrentWaterDist();
         void init(LCD* display);
         void tick();
 };

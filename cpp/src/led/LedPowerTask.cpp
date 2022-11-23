@@ -14,7 +14,7 @@ LedPowerTask::LedPowerTask(AlarmState* currState, int* ledPins, int nleds){
     }
 }
 
-void LedPowerTask::init(LightCheckTask* light, PirCheckTask* detector, int period){
+void LedPowerTask::init(int period, LightCheckTask* light, PirCheckTask* detector){
     Task::init(period);
     this->light=light;
     this->detector=detector;

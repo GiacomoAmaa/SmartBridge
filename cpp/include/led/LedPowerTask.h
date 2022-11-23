@@ -56,7 +56,7 @@ class LedPowerTask : public Task {
 
     public:
         LedPowerTask(AlarmState* currState, int* ledPins, int nleds);
-        void init(LightCheckTask* light, PirCheckTask* detector, int period);
+        void init(int period, LightCheckTask* light, PirCheckTask* detector);
         void tick();
 };
 
