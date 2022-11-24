@@ -1,10 +1,10 @@
 #include "servo/ServoControlTask.h"
-#include "servo/ServoView.h"
+#include "servo/Servo.h"
 
 ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
     this->currState=currState;
     this->pin=pin;
-    this->servoM=new ServoView();
+    this->servoM=new Servo();
 }
 
 void ServoControlTask::angle(int angle) {
@@ -12,7 +12,7 @@ void ServoControlTask::angle(int angle) {
         return;
     }
     currAngle = angle;
-    servoM->setPosition(pin, angle);
+    setServoPosition(angle);
 }
 
 void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot) {

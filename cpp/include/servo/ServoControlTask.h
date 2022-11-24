@@ -1,7 +1,7 @@
 #ifndef __SERVO_TASK__
 #define __SERVO_TASK__
 
-#include "ServoView.h"
+#include "Servo.h"
 #include "scheduler/Task.h"
 #include "utility/AlarmState.h"
 #include "sonar/SonarCheckTask.h"
@@ -15,11 +15,17 @@ class ServoControlTask : public Task {
     AlarmState* currState = nullptr;
     SonarCheckTask* sonar = nullptr;
     Potentiometer* pot = nullptr;
-    ServoView* servoM = nullptr;
+    Servo* servoM = nullptr;
     Button* inputBtn = nullptr;
     bool userControlled = false;
     int currAngle = 0;
     int pin;
+
+    void setServoPosition(int angle) {
+        servoM->attach(pin);
+        servoM->write(angle);
+        servoM->detach();
+    }
 
     int angleFromRotation(int rotation) {
         return VALVE_MAX * rotation / POT_MAX_VALUE;

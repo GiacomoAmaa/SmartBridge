@@ -8,6 +8,6 @@ int LightSensor::getPin() {
     return pin;
 }
 
-double calculateVoltage(int rawVal) {
+double LightSensor::calculateVoltage(int rawVal) {
     return (double) rawVal * 5/1024;
 }
