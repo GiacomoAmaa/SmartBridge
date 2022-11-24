@@ -173,61 +173,43 @@ public final class SmartBridgeGUI extends JFrame {
 	private void initializeButtons() {
 	    valveOpening.setEnabled(false);
 	    confirm.setEnabled(false);
+	    
 	    takeControl.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!takeControl.getText().equals("Back to Auto")) {
-					takeControl.setText("Back to Auto");
-					valveOpening.setEnabled(true);
-					confirm.setEnabled(true);
-					statesTable.setValueAt("remote", 0, 2);
-					serialChannel.sendMsg("remote");
+				if(takeControl.getText().equals("Take valve control")) {
+					setToRemote();
 				} else {
-					takeControl.setText("Take valve control");
-					valveOpening.setEnabled(false);
-					confirm.setEnabled(false);
-					statesTable.setValueAt("auto", 0, 2);
-					serialChannel.sendMsg("auto");
+					setToAuto();
 				}
 			}
 	    });
+	    
 		connect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				boolean portSet = true;
 				if (connect.getText().equals("Connect")) {
 					try {
 						serialChannel = new SerialCommChannel(ports.getSelectedItem().toString(),
 								9600);
-						
+						startConnection();
 					} catch (Exception e1) {
-						portSet = false;
-					}
-					if(portSet) {
-						threadRun = true;
-						connect.setText("Stop Connection");
-						ports.setEnabled(false);
-						takeControl.setEnabled(true);
+						System.err.println("Failed Connection to the selected port");
 					}
 				} else {
-					serialChannel.close();
-					cleanChart();
-					timeElapsed = 0;
-					connect.setText("Connect");
-					ports.setEnabled(true);
-					takeControl.setEnabled(false);
-					valveOpening.setEnabled(false);
-					confirm.setEnabled(false);
+					stopConnection();
 				}
 			}
 			
 		});
+		
 		search.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				scanPorts();
 			}
 		});
+		
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -243,18 +225,74 @@ public final class SmartBridgeGUI extends JFrame {
 		update = new Thread() {
 			@Override
 			public void run() {
-				while(threadRun) {
-					try {
-						dataRead = parser.parse(serialChannel.receiveMsg());
-						update();
-					} catch (Exception e) {
-						threadRun = false;
-						e.printStackTrace();
+				while(true) {
+					if(threadRun) {
+						try {
+							dataRead = parser.parse(serialChannel.receiveMsg());
+							update();
+						} catch (InterruptedException e) {
+							stopConnection();
+							timeElapsed = -SmartBridgeGUI.FSM_CLOCK_TIME;
+							System.err.println("Interrupted while waiting for serial data...");
+						}
+						timeElapsed += SmartBridgeGUI.FSM_CLOCK_TIME;
 					}
-					timeElapsed += SmartBridgeGUI.FSM_CLOCK_TIME;
+					try {
+						Thread.sleep(150);
+					} catch (InterruptedException e) {
+						System.err.println("Interrupted while sleeping for serial data...");
+					}
 				}
 			}
 		};
+	}
+	
+	/**
+	 * Method to setup the gui for the established connection handling
+	 */
+	private void startConnection() {
+		threadRun = true;
+		connect.setText("Stop Connection");
+		ports.setEnabled(false);
+		takeControl.setEnabled(true);
+	}
+	
+	/**
+	 * Method to setup the gui for the disabled/lost connestion
+	 */
+	private void stopConnection() {
+		threadRun = false;
+		timeElapsed = 0;
+		cleanChart();
+		serialChannel.sendMsg("auto");
+		serialChannel.close();
+		connect.setText("Connect");
+		ports.setEnabled(true);
+		takeControl.setEnabled(false);
+		valveOpening.setEnabled(false);
+		confirm.setEnabled(false);
+	}
+	
+	/**
+	 * Method to setup the gui for remote valve control
+	 */
+	private void setToRemote(){
+		takeControl.setText("Back to Auto");
+		valveOpening.setEnabled(true);
+		confirm.setEnabled(true);
+		statesTable.setValueAt("remote", 0, 2);
+		serialChannel.sendMsg("remote");
+	}
+	
+	/**
+	 * Method to setup the gui for auto valve control
+	 */
+	private void setToAuto() {
+		takeControl.setText("Take valve control");
+		valveOpening.setEnabled(false);
+		confirm.setEnabled(false);
+		statesTable.setValueAt("auto", 0, 2);
+		serialChannel.sendMsg("auto");
 	}
 	
 	/**
