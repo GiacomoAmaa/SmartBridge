@@ -17,8 +17,10 @@ void LightCheckTask::setPeriod(int period) {
 void LightCheckTask::init(int period) {
     setPeriod(period);
     LightSensorView::setupPin(ls->getPin(), IN);
+    BaseView::printLog("Fotoresistor initialization complete");
 }
 
 void LightCheckTask::tick() {
     currLight = ls->calculateVoltage(LightSensorView::measure(ls->getPin()));
+    BaseView::printLog("Light intensity: " + String(currLight));
 }

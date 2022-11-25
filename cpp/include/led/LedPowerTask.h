@@ -17,13 +17,14 @@ class LedPowerTask : public Task {
     PirCheckTask* detector = nullptr;
     LightCheckTask* light = nullptr;
     Led* leds = nullptr;
-    int nleds = 0;
     int blinkInitTime = 0;
     int lastDetecTime = 0;
+    int nleds = 0;
 
     void updateLeds() {
         for (int i=0; i<nleds; i++){
             LedView::setLedState(leds[i].getPin(), leds[i].isOn() ? ON : OFF);
+            BaseView::printLog("Led " + String(i+1) + " - " + leds[i].isOn() ? "ON" : "OFF");
         }
     }
 

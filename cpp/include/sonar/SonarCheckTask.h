@@ -28,6 +28,7 @@ class SonarCheckTask : public Task{
     char* message = nullptr;
 
     void updateWaterLevel(double distance) {
+        BaseView::printLog("Water distance: " + String(distance));
         currDistance = distance;
         if (distance >= WATER_LEVEL_PREALARM && distance < WATER_LEVEL_ALARM) {
             currWaterLevel = 1;

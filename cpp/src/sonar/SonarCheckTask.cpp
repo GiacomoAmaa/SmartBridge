@@ -18,6 +18,7 @@ void SonarCheckTask::init(LCD* display) {
     
     message = (char*)malloc(sizeof(char)*MESSAGE_LENGTH);
     SonarView::setupPin(sonar->getTrigPin(), sonar->getEchoPin());
+    BaseView::printLog("Sonar initialization complete");
 }
 
 void SonarCheckTask::tick() {
@@ -25,21 +26,30 @@ void SonarCheckTask::tick() {
     updateWaterLevel(check);
     switch(currWaterLevel) {
         case 1:
+            if (*currState != PREALARM) {
+                BaseView::printLog("Alarm state changed to PREALARM");
+                Task::setPeriod(PREALARM_PERIOD);
+            }
             *currState = PREALARM;
-            Task::setPeriod(PREALARM_PERIOD);
             sprintf(message, "Water: %.1fcm", currDistance);
-            display->print(message);
+            display->print("Water: %.1fcm");
             break;
         case 2:
+            if (*currState != ALARM) {
+                BaseView::printLog("Alarm state changed to ALARM");
+                Task::setPeriod(ALARM_PERIOD);
+            }
             *currState = ALARM;
-            Task::setPeriod(ALARM_PERIOD);
             sprintf(message, "Water: %.1fcm", currDistance);
             display->print(message);
             break;
         default:
+            if (*currState != NORMAL) {
+                BaseView::printLog("Alarm state changed to NORMAL");
+                Task::setPeriod(NORMAL_PERIOD);
+            }
             char msg = ' ';
             *currState = NORMAL;
-            Task::setPeriod(NORMAL_PERIOD);
             display->print(&msg);
             break;
     }

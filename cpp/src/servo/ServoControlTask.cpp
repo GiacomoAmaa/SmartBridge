@@ -1,6 +1,8 @@
 #include "servo/ServoControlTask.h"
 #include "servo/Servo.h"
 
+bool btnHold = false;
+
 ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
     this->currState=currState;
     this->pin=pin;
@@ -21,12 +23,19 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
     this->inputBtn=inputBtn;
     this->pot=pot;
     angle(currAngle);
+    BaseView::printLog("Servo initialization complete");
 }
 
 void ServoControlTask::tick() {
     if (*currState == ALARM) {
-        if (inputBtn->isPressed()) {
-            userControlled = true;
+        if (inputBtn->isPressed() && !btnHold)  {
+            btnHold = true;
+            userControlled = userControlled ? false : true;
+            String msg = "Manual valve control ";
+            msg = userControlled ? msg+"enabled" : msg+"disabled";
+            BaseView::printLog(msg);
+        } else {
+            btnHold = false;
         }
 
         if (userControlled) {

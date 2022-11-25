@@ -9,7 +9,7 @@ class LCD {
     public:
         LCD();
         void init();
-        void print(char* message);
+        void print(String message);
 };
 
 #endif

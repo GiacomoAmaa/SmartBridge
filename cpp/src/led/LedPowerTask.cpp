@@ -22,6 +22,7 @@ void LedPowerTask::init(int period, LightCheckTask* light, PirCheckTask* detecto
         LedView::setupPin(leds[i].getPin(), OUT);
     }
     updateLeds();
+    BaseView::printLog("Led scheduler initialization complete");
 }
 
 void LedPowerTask::tick(){

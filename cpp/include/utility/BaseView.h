@@ -16,7 +16,7 @@ class BaseView {
             }
         }
 
-        static void printLog(char* message) {
+        static void printLog(String message) {
             Serial.println(message);
         }
 };
