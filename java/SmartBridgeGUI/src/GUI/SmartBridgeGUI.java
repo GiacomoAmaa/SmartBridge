@@ -142,7 +142,6 @@ public final class SmartBridgeGUI extends JFrame {
 	    southPanel.add(confirm);
 	    southPanel.add(pane);
 	    takeControl.setEnabled(false);
-
 	}
 	
 	/**
@@ -230,6 +229,7 @@ public final class SmartBridgeGUI extends JFrame {
 						try {
 							dataRead = parser.parse(serialChannel.receiveMsg());
 							update();
+							checkAlarm();
 						} catch (InterruptedException e) {
 							stopConnection();
 							timeElapsed = -SmartBridgeGUI.FSM_CLOCK_TIME;
@@ -254,7 +254,6 @@ public final class SmartBridgeGUI extends JFrame {
 		threadRun = true;
 		connect.setText("Stop Connection");
 		ports.setEnabled(false);
-		takeControl.setEnabled(true);
 	}
 	
 	/**
@@ -268,9 +267,7 @@ public final class SmartBridgeGUI extends JFrame {
 		serialChannel.close();
 		connect.setText("Connect");
 		ports.setEnabled(true);
-		takeControl.setEnabled(false);
-		valveOpening.setEnabled(false);
-		confirm.setEnabled(false);
+		disableValveControl();
 	}
 	
 	/**
@@ -293,6 +290,18 @@ public final class SmartBridgeGUI extends JFrame {
 		confirm.setEnabled(false);
 		statesTable.setValueAt("auto", 0, 2);
 		serialChannel.sendMsg("auto");
+	}
+	
+	private void checkAlarm() {
+		if(dataRead.get(DataRead.ALERT_STATE).equals("alarm")) {
+			takeControl.setEnabled(true);
+		}
+	}
+	
+	private void disableValveControl() {
+		takeControl.setEnabled(false);
+		confirm.setEnabled(false);
+		valveOpening.setEnabled(false);
 	}
 	
 	/**
