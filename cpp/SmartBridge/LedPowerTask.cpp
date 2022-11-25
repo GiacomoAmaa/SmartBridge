@@ -46,4 +46,5 @@ void LedPowerTask::tick(){
             break;
     }
     updateLeds();
+    printLedState();
 }

@@ -24,8 +24,13 @@ class LedPowerTask : public Task {
     void updateLeds() {
         for (int i=0; i<nleds; i++){
             LedView::setLedState(leds[i].getPin(), leds[i].isOn() ? ON : OFF);
-            BaseView::printLog("Led " + String(i+1) + " - " + (leds[i].isOn() ? "ON" : "OFF"));
         }
+    }
+
+    void printLedState() {
+      for (int i=0; i<nleds; i++){
+        BaseView::printLog("Led " + String(i+1) + " - " + (leds[i].isOn() ? "ON" : "OFF"));
+      }
     }
 
     void blinkLed(Led* led) {
