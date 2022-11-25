@@ -31,8 +31,8 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(PREALARM_PERIOD);
             }
             *currState = PREALARM;
-            sprintf(message, "Water: %.1fcm", currDistance);
-            display->print("Water: %.1fcm");
+            sprintf(message, "Water: %.1f m", currDistance);
+            display->print(message);
             break;
         case 2:
             if (*currState != ALARM) {
@@ -40,7 +40,7 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(ALARM_PERIOD);
             }
             *currState = ALARM;
-            sprintf(message, "Water: %.1fcm", currDistance);
+            sprintf(message, "Water: %.1f m", currDistance);
             display->print(message);
             break;
         default:
