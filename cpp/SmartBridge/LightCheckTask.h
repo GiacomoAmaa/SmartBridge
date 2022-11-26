@@ -13,7 +13,7 @@ class LightCheckTask : public Task {
 
 	public:
 		LightCheckTask(int pinLs);
-		double getLightVoltage();
+		int getLightLevel();
 		void setPeriod(int period);
 		void init(int period);
 		void tick();

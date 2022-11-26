@@ -9,7 +9,7 @@
 #include "LightCheckTask.h"
 
 #define BLINK_TIME 2000
-#define LIGHT_SENSITIVITY 100
+#define MIN_LUMINOSITY 30
 #define TIME_INACTIVITY 5000
 
 class LedPowerTask : public Task {
@@ -48,8 +48,8 @@ class LedPowerTask : public Task {
     }
 
     void smartLighting(Led* led) {
-        double currLight = light->getLightVoltage();
-        if (currLight < LIGHT_SENSITIVITY || detector->isMovementDetected()) {
+        int currLight = light->getLightLevel();
+        if (currLight < MIN_LUMINOSITY && detector->isMovementDetected()) {
             lastDetecTime = this->getTotalTimeElapsed();
             led->turnOn();
             return;
