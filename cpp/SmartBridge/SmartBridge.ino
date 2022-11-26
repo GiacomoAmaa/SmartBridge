@@ -10,7 +10,7 @@
 #include "AlarmState.h"
 #include "Arduino.h"
 
-#define BASE_PERIOD 20
+#define BASE_PERIOD 500
 
 #define NUM_LEDS 3
 

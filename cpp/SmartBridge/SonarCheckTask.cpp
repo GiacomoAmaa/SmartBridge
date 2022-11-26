@@ -24,7 +24,7 @@ void SonarCheckTask::init(int period, LCD* display) {
 }
 
 void SonarCheckTask::tick() {
-    float check = sonar->calculateDistance(SonarView::measure(sonar->getTrigPin(), sonar->getEchoPin()));
+    int check = sonar->calculateDistance(SonarView::measure(sonar->getTrigPin(), sonar->getEchoPin()));
     updateWaterLevel(check);
     switch(currWaterLevel) {
         case 1:
