@@ -7,10 +7,10 @@ class LedView : public BaseView{
     public:
         static void setLedState(int pin, LedState state) {
             if (state == ON) {
-                digitalWrite(pin, LOW);
+                digitalWrite(pin, HIGH);
                 return;
             }
-            digitalWrite(pin, HIGH);
+            digitalWrite(pin, LOW);
         }
 };
 
