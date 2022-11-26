@@ -26,11 +26,23 @@
 #define POTENTIOMETER_PIN A1
 
 Scheduler taskmgr;
+AlarmState state;
+
+void printAlarmState() {
+  String msg = "NORMAL";
+  if (state == PREALARM) {
+    msg = "PREALARM";
+  } 
+  if (state == ALARM) {
+    msg = "ALARM";
+  }
+  Serial.println("Alarm state: "+msg);
+}
 
 void setup(){
     Serial.begin(9600);
-    AlarmState state = NORMAL;
     int leds[NUM_LEDS];
+    state = NORMAL;
 
     Potentiometer* pot = new Potentiometer(POTENTIOMETER_PIN);
     Button* button = new Button(BUTTON_PIN);
@@ -61,6 +73,7 @@ void setup(){
 }
 
 void loop(){
+    printAlarmState();
     taskmgr.schedule();
     Serial.println();
 }
