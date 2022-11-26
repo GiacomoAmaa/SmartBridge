@@ -1,13 +1,15 @@
 #ifndef __LIGHT_SENSOR__
 #define __LIGHT_SENSOR__
 
+#include <Arduino.h>
+
 class LightSensor {
     int pin;
 
     public:
         LightSensor(int pin);
         int getPin();
-        double calculateVoltage(int rawVal);
+        int calculateLightLevel(int rawVal);
 };
 
 #endif

@@ -6,7 +6,7 @@ LightCheckTask::LightCheckTask(int pinLs) {
     this->ls=new LightSensor(pinLs);
 }
 
-double LightCheckTask::getLightVoltage() {
+int LightCheckTask::getLightLevel() {
     return currLight;
 }
 
@@ -21,6 +21,6 @@ void LightCheckTask::init(int period) {
 }
 
 void LightCheckTask::tick() {
-    currLight = ls->calculateVoltage(LightSensorView::measure(ls->getPin()));
+    currLight = ls->calculateLightLevel(LightSensorView::measure(ls->getPin()));
     BaseView::printLog("Light intensity: " + String(currLight));
 }
