@@ -9,5 +9,5 @@ int LightSensor::getPin() {
 }
 
 int LightSensor::calculateLightLevel(int rawVal) {
-    return map(rawVal,0,1000,0,100);
+    return map(rawVal,MIN_LIGHT_VALUE,MAX_LIGHT_VALUE,0,100);
 }

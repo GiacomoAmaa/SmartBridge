@@ -63,7 +63,7 @@ void setup(){
     ledtask->init(BASE_PERIOD, lighttask, pirtask);
     lighttask->init(BASE_PERIOD);
     pirtask->init(BASE_PERIOD);
-    sonartask->init(lcd);
+    sonartask->init(BASE_PERIOD, lcd);
 
     taskmgr.addTask(lighttask);
     taskmgr.addTask(pirtask);
