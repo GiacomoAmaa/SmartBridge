@@ -17,8 +17,8 @@ class LedPowerTask : public Task {
     PirCheckTask* detector = nullptr;
     LightCheckTask* light = nullptr;
     Led* leds = nullptr;
-    int lastBlinkTime = 0;
-    int lastDetecTime = 0;
+    unsigned long lastBlinkTime = 0;
+    unsigned long lastDetecTime = 0;
     int nleds = 0;
 
     void updateLeds() {
@@ -38,7 +38,7 @@ class LedPowerTask : public Task {
             lastBlinkTime = this->getTotalTimeElapsed();
             led->turnOn();
         }
-        int blinkTimeElaps = this->getTotalTimeElapsed() - lastBlinkTime;
+        unsigned long blinkTimeElaps = this->getTotalTimeElapsed() - lastBlinkTime;
         BaseView::printLog("blinkTimeElaps: "+String(blinkTimeElaps));
         BaseView::printLog("lastBlinkTime: "+String(lastBlinkTime));
         if (blinkTimeElaps >= BLINK_TIME) {

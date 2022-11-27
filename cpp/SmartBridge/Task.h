@@ -4,7 +4,7 @@
 class Task {
     int myPeriod;
     int timeElapsed;
-    int totalTimeElapsed;
+    unsigned long totalTimeElapsed;
 
     protected:
         int getTotalTimeElapsed() {
