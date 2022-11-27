@@ -98,7 +98,7 @@ class Servo
     int read(); 			 // returns current pulse width in microseconds for this servo
 	  boolean attached();      // return true if this servo is attached 
   private:
-	 uint8_t chanIndex;      // index into the channel data for this servo
+	  uint8_t chanIndex;      // index into the channel data for this servo
 };
 
 #endif

@@ -1,10 +1,9 @@
 #include "ServoControlTask.h"
 #include "Servo.h"
 
-bool btnHold = false;
-
-ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
+ServoControlTask::ServoControlTask(AlarmState* currState, int pin, ServoControl* currControl) {
     this->currState=currState;
+    this->currControl=currControl;
     this->pin=pin;
     this->servoM=new Servo();
 }
@@ -28,20 +27,16 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
 
 void ServoControlTask::tick() {
     if (*currState == ALARM) {
-        if (inputBtn->isPressed() && !btnHold)  {
-            btnHold = true;
-            userControlled = userControlled ? false : true;
-            String msg = "Manual valve control ";
-            msg = userControlled ? msg+"enabled" : msg+"disabled";
-            BaseView::printLog(msg);
-        } else {
-            btnHold = false;
-        }
+        switch(*currControl){
+          
+          case AUTO: angle(angleFromWaterLvl(sonar->getCurrentWaterDist()));
+            changeControl(MANUAL);
+            break;
+          case MANUAL: angle(angleFromRotation(pot->getRotation()));
+            chengeControl(AUTO);
+            break;
+          case REMOTE
 
-        if (userControlled) {
-            angle(angleFromRotation(pot->getRotation()));
-        } else {
-            angle(angleFromWaterLvl(sonar->getCurrentWaterDist()));
         }
     } else {
         userControlled = false;
