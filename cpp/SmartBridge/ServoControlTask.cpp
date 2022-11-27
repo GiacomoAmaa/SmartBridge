@@ -27,17 +27,22 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
 
 void ServoControlTask::tick() {
     if (*currState == ALARM) {
+        String mode = "AUTO";
         switch(*currControl){
-          
-          case AUTO: angle(angleFromWaterLvl(sonar->getCurrentWaterDist()));
-            changeControl(MANUAL);
+          case MANUAL: 
+            angle(angleFromRotation(pot->getRotation()));
+            buttonSetMode(AUTO);
+            mode = "MANUAL";
             break;
-          case MANUAL: angle(angleFromRotation(pot->getRotation()));
-            chengeControl(AUTO);
+          case REMOTE:
+            mode = "REMOTE";
             break;
-          case REMOTE
-
+          default:
+            angle(angleFromWaterLvl(sonar->getCurrentWaterDist()));
+            buttonSetMode(MANUAL);
+            break;
         }
+        BaseView::printlog("Valve control mode: " + mode);
     } else {
         userControlled = false;
         angle(VALVE_MIN);
