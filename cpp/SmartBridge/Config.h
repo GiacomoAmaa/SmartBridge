@@ -1,0 +1,12 @@
+#define BASE_PERIOD 500
+#define NUM_LEDS 3
+#define LED_A_PIN 13
+#define LED_B_PIN 12
+#define LED_C_PIN 11
+#define SERVO_PIN 9
+#define SONAR_ECHO_PIN 4
+#define SONAR_TRIG_PIN 3
+#define PIR_PIN 2
+#define BUTTON_PIN 1
+#define LIGHT_PIN A0
+#define POTENTIOMETER_PIN A1
