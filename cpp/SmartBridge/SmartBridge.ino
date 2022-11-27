@@ -27,6 +27,8 @@ void printAlarmState() {
 
 void setup(){
     Serial.begin(9600);
+    Serial.println();
+    
     int leds[NUM_LEDS] = {LED_A_PIN, LED_B_PIN, LED_C_PIN};
     state = NORMAL;
 
@@ -52,6 +54,8 @@ void setup(){
     taskmgr.addTask(sonartask);
     taskmgr.addTask(servotask);
     taskmgr.addTask(ledtask);
+
+    Serial.println();
 }
 
 void loop(){
