@@ -15,8 +15,6 @@
 #define PREALARM_PERIOD 15
 #define ALARM_PERIOD 25
 
-#define MESSAGE_LENGTH 20
-
 class SonarCheckTask : public Task{
     AlarmState* currState = nullptr;
     Sonar* sonar = nullptr;

@@ -42,7 +42,7 @@ class LedPowerTask : public Task {
         if (blinkTimeElaps >= BLINK_TIME) {
             if (led->isOff()) {
                 led->turnOn();
-            } else if (led->isOn()) {
+            } else {
                 led->turnOff();
             }
             lastBlinkTime = this->getTotalTimeElapsed();
@@ -53,17 +53,12 @@ class LedPowerTask : public Task {
         int timeElapsFromLastDet = this->getTotalTimeElapsed() - lastDetecTime;
         int currLight = light->getLightLevel();
 
-        if (currLight >= MIN_LUMINOSITY) {
-            led->turnOff();
-            return;
-        }
-        if (detector->isMovementDetected()) {
+        led->turnOff();
+        if (currLight < MIN_LUMINOSITY && (timeElapsFromLastDet < TIME_INACTIVITY || detector->isMovementDetected())) {
+          led->turnOn();
+          if (detector->isMovementDetected()){
             lastDetecTime = this->getTotalTimeElapsed();
-            led->turnOn();
-            return;
-        }
-        if (timeElapsFromLastDet >= TIME_INACTIVITY) {
-            led->turnOff();
+          }
         }
     }
 
