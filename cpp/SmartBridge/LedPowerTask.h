@@ -18,7 +18,7 @@ class LedPowerTask : public Task {
     LightCheckTask* light = nullptr;
     Led* leds = nullptr;
     int blinkTimeElaps = 0;
-    int detecTimeElaps = 0;
+    int detecTimeElaps = TIME_INACTIVITY;
     int nleds = 0;
 
     void updateLeds() {

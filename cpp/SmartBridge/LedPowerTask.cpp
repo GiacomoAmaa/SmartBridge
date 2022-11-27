@@ -29,6 +29,7 @@ void LedPowerTask::init(int period, LightCheckTask* light, PirCheckTask* detecto
 void LedPowerTask::tick(){
     switch(*currState) {
         case ALARM:
+            detecTimeElaps = TIME_INACTIVITY;
             leds[0].turnOff();
             leds[1].turnOff();
             leds[2].turnOn();
