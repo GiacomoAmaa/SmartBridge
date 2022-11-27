@@ -28,11 +28,11 @@ class ServoControlTask : public Task {
     }
 
     int angleFromRotation(int rotation) {
-        return VALVE_MAX * rotation / POT_MAX_VALUE;
+        return map(rotation, POT_MIN_VALUE, POT_MAX_VALUE, VALVE_MIN, VALVE_MAX);
     }
 
     int angleFromWaterLvl(int waterLevel) {
-        return VALVE_MAX * waterLevel /* WATER_LEVEL_MAX*/;
+        return map(waterLevel, WATER_LEVEL_ALARM, WATER_LEVEL_MAX, VALVE_MIN, VALVE_MAX);
     }
 
     public:

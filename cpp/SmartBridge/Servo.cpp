@@ -1,8 +1,6 @@
 extern "C" {
-  // AVR LibC Includes
   #include <inttypes.h>
   #include <avr/interrupt.h>
-  // #include "WConstants.h"
 }
 #include <Arduino.h>
 #include "Servo.h"
