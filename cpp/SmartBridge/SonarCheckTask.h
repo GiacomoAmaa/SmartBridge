@@ -7,10 +7,8 @@
 #include "AlarmState.h"
 #include "BaseView.h"
 
-#define MAX_WATER_LEVEL 0
-#define MIN_WATER_LEVEL 343 //cm traveled in 0,02 s
 #define WATER_LEVEL_ALARM 95
-#define WATER_LEVEL_PREALARM 90
+#define WATER_LEVEL_PREALARM 40
 
 #define PREALARM_PERIOD 15
 #define ALARM_PERIOD 25
@@ -28,7 +26,7 @@ class SonarCheckTask : public Task{
 
     void updateWaterLevel(int distance) {
         currDistance = distance;
-        currHeightLvl = map(distance, MAX_WATER_LEVEL, MIN_WATER_LEVEL, 100, 0);
+        currHeightLvl = map(distance, MIN_DISTANCE, MAX_DISTANCE, 100, 0);
         BaseView::printLog("Water distance: " + String(currDistance) + " cm");
         if (currHeightLvl >= WATER_LEVEL_PREALARM && currHeightLvl < WATER_LEVEL_ALARM) {
             currWaterLevel = 1;

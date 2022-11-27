@@ -9,21 +9,7 @@
 #include "Scheduler.h"
 #include "AlarmState.h"
 #include "Arduino.h"
-
-#define BASE_PERIOD 500
-
-#define NUM_LEDS 3
-
-#define LED_A_PIN 13
-#define LED_B_PIN 12
-#define LED_C_PIN 11
-#define SERVO_PIN 9
-#define SONAR_ECHO_PIN 4
-#define SONAR_TRIG_PIN 3
-#define PIR_PIN 2
-#define BUTTON_PIN 1
-#define LIGHT_PIN A0
-#define POTENTIOMETER_PIN A1
+#include "Config.h"
 
 Scheduler taskmgr;
 AlarmState state;
@@ -42,17 +28,13 @@ void printAlarmState() {
 void setup(){
     Serial.begin(9600);
     Serial.println();
-
-    int leds[NUM_LEDS];
+    
+    int leds[NUM_LEDS] = {LED_A_PIN, LED_B_PIN, LED_C_PIN};
     state = NORMAL;
 
     Potentiometer* pot = new Potentiometer(POTENTIOMETER_PIN);
     Button* button = new Button(BUTTON_PIN);
     LCD* lcd = new LCD();
-
-    leds[0] = LED_A_PIN;
-    leds[1] = LED_B_PIN;
-    leds[2] = LED_C_PIN;
 
     SonarCheckTask* sonartask = new SonarCheckTask(&state, SONAR_TRIG_PIN, SONAR_ECHO_PIN);
     ServoControlTask* servotask = new ServoControlTask(&state, SERVO_PIN);
