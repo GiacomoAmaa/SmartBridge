@@ -33,7 +33,7 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(prealarm);
             }
             *currState = PREALARM;
-            display->print("Water: "+String(currDistance)+"cm");
+            display->print("PREALARM","Water: "+String(currDistance)+"cm");
             break;
         case 2:
             if (*currState != ALARM) {
@@ -41,7 +41,7 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(alarm);
             }
             *currState = ALARM;
-            display->print("Water: "+String(currDistance)+"cm");
+            display->print("ALARM","Water: "+String(currDistance)+"cm");
             break;
         default:
             if (*currState != NORMAL) {
@@ -49,7 +49,7 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(normal);
             }
             *currState = NORMAL;
-            display->print("");
+            display->clean();
             break;
     }
 }

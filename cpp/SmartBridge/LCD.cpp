@@ -11,7 +11,11 @@ void LCD::init() {
     BaseView::printLog("LCD initialization complete");
 }
 
-void LCD::print(String message) {
-    view->printScreen(message);
+void LCD::print(String frstline, String scndline) {
+    view->printScreen(frstline, scndline);
     //BaseView::printLog("LCD new msg: " + message)
+}
+
+void LCD::clean() {
+    view->clean();
 }
