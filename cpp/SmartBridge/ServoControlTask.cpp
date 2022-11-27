@@ -1,9 +1,9 @@
 #include "ServoControlTask.h"
 #include "Servo.h"
 
-ServoControlTask::ServoControlTask(AlarmState* currState, int pin, ServoControl* currControl) {
+ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
     this->currState=currState;
-    this->currControl=currControl;
+    this->currControl=AUTO;
     this->pin=pin;
     this->servoM=new Servo();
 }
@@ -28,7 +28,7 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
 void ServoControlTask::tick() {
     if (*currState == ALARM) {
         String mode = "AUTO";
-        switch(*currControl){
+        switch(currControl){
           case MANUAL: 
             angle(angleFromRotation(pot->getRotation()));
             buttonSetMode(AUTO);
@@ -42,9 +42,9 @@ void ServoControlTask::tick() {
             buttonSetMode(MANUAL);
             break;
         }
-        BaseView::printlog("Valve control mode: " + mode);
+        BaseView::printLog("Valve control mode: " + mode);
     } else {
-        userControlled = false;
+        currControl = AUTO;
         angle(VALVE_MIN);
     }
 }

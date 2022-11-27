@@ -5,20 +5,21 @@
 #include "Task.h"
 #include "AlarmState.h"
 #include "SonarCheckTask.h"
-#include "ValveControl.h"
 #include "Button.h"
 #include "Potentiometer.h"
 
 #define VALVE_MIN 0
 #define VALVE_MAX 180
 
+typedef enum {AUTO, MANUAL, REMOTE} ServoControl;
+
 class ServoControlTask : public Task {
     AlarmState* currState = nullptr;
-    ServoControl* currControl = nullptr;
     SonarCheckTask* sonar = nullptr;
     Potentiometer* pot = nullptr;
     Servo* servoM = nullptr;
     Button* inputBtn = nullptr;
+    ServoControl currControl;
     bool btnHold = false;
     int currAngle = 0;
     int pin;
@@ -40,7 +41,7 @@ class ServoControlTask : public Task {
     void buttonSetMode(ServoControl crtl) {
       if (inputBtn->isPressed() && !btnHold)  {
         btnHold = true;
-        *currControl = crtl;
+        currControl = crtl;
       } else if (!inputBtn->isPressed()){
         btnHold = false;
       }
