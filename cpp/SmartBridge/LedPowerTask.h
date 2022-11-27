@@ -17,8 +17,8 @@ class LedPowerTask : public Task {
     PirCheckTask* detector = nullptr;
     LightCheckTask* light = nullptr;
     Led* leds = nullptr;
-    unsigned long lastBlinkTime = 0;
-    unsigned long lastDetecTime = 0;
+    int blinkTimeElaps = 0;
+    int detecTimeElaps = 0;
     int nleds = 0;
 
     void updateLeds() {
@@ -34,32 +34,27 @@ class LedPowerTask : public Task {
     }
 
     void blinkLed(Led* led) {
-        if (lastBlinkTime <= 0) {
-            lastBlinkTime = this->getTotalTimeElapsed();
-            led->turnOn();
-        }
-        unsigned long blinkTimeElaps = this->getTotalTimeElapsed() - lastBlinkTime;
+        blinkTimeElaps += this->getPeriod();
         BaseView::printLog("blinkTimeElaps: "+String(blinkTimeElaps));
-        BaseView::printLog("lastBlinkTime: "+String(lastBlinkTime));
         if (blinkTimeElaps >= BLINK_TIME) {
             if (led->isOff()) {
                 led->turnOn();
             } else {
                 led->turnOff();
             }
-            lastBlinkTime = this->getTotalTimeElapsed();
+            blinkTimeElaps = 0;
         }
     }
 
     void smartLighting(Led* led) {
-        int timeElapsFromLastDet = this->getTotalTimeElapsed() - lastDetecTime;
         int currLight = light->getLightLevel();
 
         led->turnOff();
-        if (currLight < MIN_LUMINOSITY && (timeElapsFromLastDet < TIME_INACTIVITY || detector->isMovementDetected())) {
+        if (currLight < MIN_LUMINOSITY && (detecTimeElaps < TIME_INACTIVITY || detector->isMovementDetected())) {
+          detecTimeElaps += this->getPeriod();
           led->turnOn();
           if (detector->isMovementDetected()){
-            lastDetecTime = this->getTotalTimeElapsed();
+            detecTimeElaps = 0;
           }
         }
     }

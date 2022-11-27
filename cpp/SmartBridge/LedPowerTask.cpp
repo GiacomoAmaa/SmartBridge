@@ -20,6 +20,7 @@ void LedPowerTask::init(int period, LightCheckTask* light, PirCheckTask* detecto
     this->detector=detector;
     for (int i=0; i<nleds; i++) {
         LedView::setupPin(leds[i].getPin(), OUT);
+        leds[i].turnOff();
     }
     updateLeds();
     BaseView::printLog("Led scheduler initialization complete");
@@ -28,7 +29,6 @@ void LedPowerTask::init(int period, LightCheckTask* light, PirCheckTask* detecto
 void LedPowerTask::tick(){
     switch(*currState) {
         case ALARM:
-            lastBlinkTime = 0;
             leds[0].turnOff();
             leds[1].turnOff();
             leds[2].turnOn();
@@ -39,7 +39,6 @@ void LedPowerTask::tick(){
             blinkLed(&leds[2]);
             break;
         default:
-            lastBlinkTime = 0;
             smartLighting(&leds[0]);
             leds[1].turnOn();
             leds[2].turnOff();
