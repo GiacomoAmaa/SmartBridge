@@ -12,7 +12,8 @@ class LCDView : public BaseView {
     LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, ROWS, COLS);
     public:
         void init();
-        void printScreen(String message);
+        void printScreen(String frstline, String scndline);
+        void clean();
 };
 
 #endif

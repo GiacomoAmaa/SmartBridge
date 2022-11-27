@@ -9,7 +9,8 @@ class LCD {
     public:
         LCD();
         void init();
-        void print(String message);
+        void print(String frstline, String scndline);
+        void clean();
 };
 
 #endif

@@ -32,7 +32,7 @@ class ServoControlTask : public Task {
     }
 
     int angleFromWaterLvl(int waterLevel) {
-        return VALVE_MAX * waterLevel / WATER_LEVEL_MAX;
+        return VALVE_MAX * waterLevel /* WATER_LEVEL_MAX*/;
     }
 
     public:

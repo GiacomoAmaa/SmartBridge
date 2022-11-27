@@ -3,6 +3,7 @@
 
 #define DELAY_HIGH 3
 #define DELAY_LOW 5
+#define TIMEOUT 20000
 
 #include "BaseView.h"
 
@@ -20,7 +21,7 @@ class SonarView : public BaseView {
             delayMicroseconds(DELAY_LOW);
             digitalWrite(trigPin,LOW);
 
-            return pulseIn(echoPin, HIGH);
+            return pulseIn(echoPin, HIGH, TIMEOUT);
         }
 };
 
