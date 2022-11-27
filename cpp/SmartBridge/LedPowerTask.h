@@ -40,6 +40,7 @@ class LedPowerTask : public Task {
         }
         int blinkTimeElaps = this->getTotalTimeElapsed() - lastBlinkTime;
         BaseView::printLog("blinkTimeElaps: "+String(blinkTimeElaps));
+        BaseView::printLog("lastBlinkTime: "+String(lastBlinkTime));
         if (blinkTimeElaps >= BLINK_TIME) {
             if (led->isOff()) {
                 led->turnOn();
