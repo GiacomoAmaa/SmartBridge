@@ -11,6 +11,8 @@
 #define VALVE_MIN 0
 #define VALVE_MAX 180
 
+#define DELAY_SERVO 50
+
 typedef enum {AUTO, MANUAL, REMOTE} ServoControl;
 
 class ServoControlTask : public Task {
@@ -25,8 +27,10 @@ class ServoControlTask : public Task {
     int pin;
 
     void setServoPosition(int angle) {
+        float coeff = (2250.0-750.0)/180;
         servoM->attach(pin);
-        servoM->write(angle);
+        servoM->write(750 + angle*coeff);
+        delay(DELAY_SERVO);
         servoM->detach();
     }
 
