@@ -1,5 +1,4 @@
 #include "LCDTask.h"
-#include "LCDView.h"
 #include "BaseView.h"
 
 LCDTask::LCDTask() {

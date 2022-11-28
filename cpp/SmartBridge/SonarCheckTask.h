@@ -19,6 +19,7 @@ class SonarCheckTask : public Task{
     AlarmState* currState = nullptr;
     Sonar* sonar = nullptr;
     LCDTask* display = nullptr;
+    String alertState = "NORMAL" ;
     int currDistance = 0;
     int currHeightLvl = 0;
     int currWaterLevel = 0;

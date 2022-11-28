@@ -62,6 +62,7 @@ class LedPowerTask : public Task {
         LedPowerTask(AlarmState* currState, int* ledPins, int nleds);
         void init(int period, LightCheckTask* light, PirCheckTask* detector);
         void tick();
+        String getSmartLightStatus();
 };
 
 #endif

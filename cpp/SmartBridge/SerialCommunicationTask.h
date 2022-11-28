@@ -9,6 +9,8 @@
 #include "ServoControlTask.h"
 #include "SerialCommunication.h"
 
+#define SEP ";"
+
 
 class SerialCommunicationTask : public Task {
     AlarmState* alertState = nullptr;
@@ -17,11 +19,21 @@ class SerialCommunicationTask : public Task {
     LightCheckTask* luminosity = nullptr;
     LedPowerTask* light = nullptr;
 
+    String alertStateToString(){
+      String msg = "NORMAL";
+      if (*alertState == PREALARM) {
+        msg = "PREALARM";
+      }
+      if (*alertState == ALARM) {
+        msg = "ALARM";
+      }
+      return msg;
+    }
     public:
-        SerialCommunicationTask(AlarmState* currState, SonarCheckTask* waterLvl,
-         ServoControlTask* valve, LightCheckTask* luminosity, LedPowerTask* light);
+        SerialCommunicationTask(AlarmState* currState);
 
-        void init();
+        void init(int period, SonarCheckTask* waterLvl, ServoControlTask* valve,
+         LightCheckTask* luminosity, LedPowerTask* light);
         void tick();
 };
 

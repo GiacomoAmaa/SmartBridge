@@ -4,6 +4,7 @@
 #include "ServoControlTask.h"
 #include "SonarCheckTask.h"
 #include "Potentiometer.h"
+#include "SerialCommunicationTask.h"
 #include "Button.h"
 #include "LCDTask.h"
 #include "Scheduler.h"
@@ -38,27 +39,30 @@ void setup(){
     Potentiometer* pot = new Potentiometer(POTENTIOMETER_PIN);
     Button* button = new Button(BUTTON_PIN);
 
-    SonarCheckTask* sonartask = new SonarCheckTask(&state, SONAR_TRIG_PIN, SONAR_ECHO_PIN);
-    ServoControlTask* servotask = new ServoControlTask(&state, SERVO_PIN);
-    LedPowerTask* ledtask = new LedPowerTask(&state, leds, NUM_LEDS);
-    LightCheckTask* lighttask = new LightCheckTask(LIGHT_PIN);
-    PirCheckTask* pirtask = new PirCheckTask(PIR_PIN);
+    SonarCheckTask* sonarTask = new SonarCheckTask(&state, SONAR_TRIG_PIN, SONAR_ECHO_PIN);
+    ServoControlTask* servoTask = new ServoControlTask(&state, SERVO_PIN);
+    LedPowerTask* ledTask = new LedPowerTask(&state, leds, NUM_LEDS);
+    LightCheckTask* lightTask = new LightCheckTask(LIGHT_PIN);
+    PirCheckTask* pirTask = new PirCheckTask(PIR_PIN);
     LCDTask* lcd = new LCDTask();
+    SerialCommunicationTask* serialComm = new SerialCommunicationTask(&state);
 
     taskmgr.init(BASE_PERIOD);
-    servotask->init(BASE_PERIOD, sonartask, button, pot, lcd);
-    ledtask->init(BASE_PERIOD, lighttask, pirtask);
-    sonartask->init(BASE_PERIOD, lcd);
-    lighttask->init(BASE_PERIOD);
-    pirtask->init(BASE_PERIOD);
+    servoTask->init(BASE_PERIOD, sonarTask, button, pot, lcd);
+    ledTask->init(BASE_PERIOD, lightTask, pirTask);
+    sonarTask->init(BASE_PERIOD, lcd);
+    lightTask->init(BASE_PERIOD);
+    pirTask->init(BASE_PERIOD);
     lcd->init(BASE_PERIOD);
+    serialComm->init(BASE_PERIOD, sonarTask, servoTask, lightTask, ledTask);
 
-    taskmgr.addTask(lighttask);
-    taskmgr.addTask(pirtask);
-    taskmgr.addTask(sonartask);
-    taskmgr.addTask(servotask);
-    taskmgr.addTask(ledtask);
+    taskmgr.addTask(lightTask);
+    taskmgr.addTask(pirTask);
+    taskmgr.addTask(sonarTask);
+    taskmgr.addTask(servoTask);
+    taskmgr.addTask(ledTask);
     taskmgr.addTask(lcd);
+    taskmgr.addTask(serialComm);
 
     Serial.println();
 }

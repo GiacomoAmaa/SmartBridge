@@ -48,3 +48,7 @@ void LedPowerTask::tick(){
     updateLeds();
     printLedState();
 }
+
+String LedPowerTask::getSmartLightStatus() {
+  return leds[0].isOn() ? "ON" : "OFF";
+}

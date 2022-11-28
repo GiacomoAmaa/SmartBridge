@@ -29,7 +29,6 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
 
 void ServoControlTask::tick() {
     if (*currState == ALARM) {
-        String mode = "AUTO";
         switch(currControl){
           case MANUAL: 
             angle(angleFromRotation(pot->getRotation()));
@@ -50,4 +49,12 @@ void ServoControlTask::tick() {
         currControl = AUTO;
         angle(VALVE_MIN);
     }
+}
+
+int ServoControlTask::getCurrValveOpening() {
+  return map(currAngle, VALVE_MIN, VALVE_MAX, 0, 100);
+}
+
+String ServoControlTask::getValveControl(){
+  return mode;
 }

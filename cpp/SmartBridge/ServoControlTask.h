@@ -24,6 +24,7 @@ class ServoControlTask : public Task {
     Button* inputBtn = nullptr;
     Servo* servoM = nullptr;
     ServoControl currControl;
+    String mode = "AUTO";
     bool btnHold = false;
     int currAngle = 0;
     int pin;
@@ -59,6 +60,8 @@ class ServoControlTask : public Task {
         void angle(int angle);
         void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd);
         void tick();
+        int getCurrValveOpening();
+        String getValveControl();
 };
 
 #endif
