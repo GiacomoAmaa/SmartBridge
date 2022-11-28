@@ -27,16 +27,12 @@ class ServoControlTask : public Task {
     int pin;
 
     void setServoPosition(int angle) {
-        if (currAngle == angle) {
-          return;
-        }
         float coeff = (2250.0-750.0)/180;
-        currAngle = angle;
         servoM->attach(pin);
         servoM->write(750 + angle*coeff);
         delay(DELAY_SERVO);
         servoM->detach();
-        BaseView::printLog("Valve angle set to " + currAngle + " degrees"); 
+        BaseView::printLog("Valve angle set to " + String(currAngle) + " degrees"); 
     }
 
     int angleFromRotation(int rotation) {
