@@ -40,7 +40,7 @@ void ServoControlTask::tick() {
             mode = "REMOTE";
             break;
           default:
-            angle(angleFromWaterLvl(sonar->getCurrentWaterDist()));
+            angle(angleFromWaterLvl(sonar->getCurrentHeightLvl()));
             buttonSetMode(MANUAL);
             break;
         }

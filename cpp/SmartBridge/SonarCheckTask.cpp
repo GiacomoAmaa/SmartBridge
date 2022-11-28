@@ -11,6 +11,10 @@ double SonarCheckTask::getCurrentWaterDist() {
     return currDistance;
 }
 
+int SonarCheckTask::getCurrentHeightLvl() {
+    return currHeightLvl;
+}
+
 void SonarCheckTask::init(int period, LCDTask* display) {
     Task::init(period);
     this->display=display;

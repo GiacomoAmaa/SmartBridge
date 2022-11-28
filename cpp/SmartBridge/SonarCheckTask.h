@@ -8,8 +8,8 @@
 #include "BaseView.h"
 
 #define WATER_LEVEL_MAX 100
-#define WATER_LEVEL_ALARM 95
-#define WATER_LEVEL_PREALARM 40
+#define WATER_LEVEL_ALARM 90
+#define WATER_LEVEL_PREALARM 50
 #define WATER_LEVEL_MIN 0
 
 #define PREALARM_PERIOD 15
@@ -43,8 +43,9 @@ class SonarCheckTask : public Task{
 
     public:
         SonarCheckTask(AlarmState* currState, int trigPin, int echoPin);
-        double getCurrentWaterDist();
         void init(int period, LCDTask* display);
+        double getCurrentWaterDist();
+        int getCurrentHeightLvl();
         void tick();
 };
 
