@@ -4,6 +4,7 @@
 #include "Servo.h"
 #include "Task.h"
 #include "AlarmState.h"
+#include "LCDTask.h"
 #include "SonarCheckTask.h"
 #include "Button.h"
 #include "Potentiometer.h"
@@ -18,9 +19,10 @@ typedef enum {AUTO, MANUAL, REMOTE} ServoControl;
 class ServoControlTask : public Task {
     AlarmState* currState = nullptr;
     SonarCheckTask* sonar = nullptr;
+    LCDTask* lcd = nullptr;
     Potentiometer* pot = nullptr;
-    Servo* servoM = nullptr;
     Button* inputBtn = nullptr;
+    Servo* servoM = nullptr;
     ServoControl currControl;
     bool btnHold = false;
     int currAngle = 0;
@@ -55,7 +57,7 @@ class ServoControlTask : public Task {
     public:
         ServoControlTask(AlarmState* currState, int pin);
         void angle(int angle);
-        void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot);
+        void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd);
         void tick();
 };
 

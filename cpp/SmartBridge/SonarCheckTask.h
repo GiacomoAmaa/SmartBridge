@@ -3,7 +3,7 @@
 
 #include "Sonar.h"
 #include "Task.h"
-#include "LCD.h"
+#include "LCDTask.h"
 #include "AlarmState.h"
 #include "BaseView.h"
 
@@ -18,7 +18,7 @@
 class SonarCheckTask : public Task{
     AlarmState* currState = nullptr;
     Sonar* sonar = nullptr;
-    LCD* display = nullptr;
+    LCDTask* display = nullptr;
     int currDistance = 0;
     int currHeightLvl = 0;
     int currWaterLevel = 0;
@@ -44,7 +44,7 @@ class SonarCheckTask : public Task{
     public:
         SonarCheckTask(AlarmState* currState, int trigPin, int echoPin);
         double getCurrentWaterDist();
-        void init(int period, LCD* display);
+        void init(int period, LCDTask* display);
         void tick();
 };
 

@@ -17,11 +17,12 @@ void ServoControlTask::angle(int angle) {
     setServoPosition(angle);
 }
 
-void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot) {
+void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd) {
     Task::init(period);
     this->sonar=sonar;
     this->inputBtn=inputBtn;
     this->pot=pot;
+    this->lcd=lcd;
     angle(currAngle);
     BaseView::printLog("Servo initialization complete");
 }
@@ -44,6 +45,7 @@ void ServoControlTask::tick() {
             break;
         }
         BaseView::printLog("Valve control mode: " + mode);
+        lcd->appendMsg("Valve: " + String(currAngle) + "degrees");
     } else {
         currControl = AUTO;
         angle(VALVE_MIN);

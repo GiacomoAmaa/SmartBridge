@@ -11,10 +11,9 @@ double SonarCheckTask::getCurrentWaterDist() {
     return currDistance;
 }
 
-void SonarCheckTask::init(int period, LCD* display) {
+void SonarCheckTask::init(int period, LCDTask* display) {
     Task::init(period);
     this->display=display;
-    display->init();
     normal = period;
     prealarm = normal - PREALARM_PERIOD;
     alarm = normal - ALARM_PERIOD;
@@ -33,7 +32,7 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(prealarm);
             }
             *currState = PREALARM;
-            display->print("PREALARM","Water: "+String(currDistance)+"cm");
+            display->appendMsg("Water: "+String(currDistance)+"cm");
             break;
         case 2:
             if (*currState != ALARM) {
@@ -41,7 +40,7 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(alarm);
             }
             *currState = ALARM;
-            display->print("ALARM","Water: "+String(currDistance)+"cm");
+            display->appendMsg("Water: "+String(currDistance)+"cm");
             break;
         default:
             if (*currState != NORMAL) {
@@ -49,7 +48,6 @@ void SonarCheckTask::tick() {
                 Task::setPeriod(normal);
             }
             *currState = NORMAL;
-            display->clean();
             break;
     }
 }
