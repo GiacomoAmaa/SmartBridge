@@ -2,17 +2,15 @@
 
 void LCDView::init() {
   lcd.init();
+  lcd.backlight();
 }
 
-void LCDView::printScreen(int col, String msg) {
-  lcd.backlight();
-  lcd.clear();
-  lcd.setCursor(0, col);
+void LCDView::printScreen(int row, String msg) {
+  lcd.setCursor(0, row);
   lcd.print(msg);
 }
 
 void LCDView::clean(){
   lcd.clear();
-  lcd.noBacklight();
 }
 

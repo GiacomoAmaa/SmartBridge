@@ -5,16 +5,16 @@
 #include "BaseView.h"
 
 #define ADDRESS 0x27
-#define ROWS 20
-#define COLS 4
+#define MAX_ROWS 2
+#define MAX_COLS 16
 
 class LCDView : public BaseView {
-
-  LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, ROWS, COLS);
+  
+  LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, MAX_COLS, MAX_ROWS);
 
   public:
     void init();
-    void printScreen(int col, String msg);
+    void printScreen(int row, String msg);
     void clean();
 };
 

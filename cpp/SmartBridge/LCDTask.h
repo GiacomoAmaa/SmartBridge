@@ -4,13 +4,10 @@
 #include "LCDView.h"
 #include "Task.h"
 
-#define MAX_ROWS 2
-#define MAX_COLS 16
-
 class LCDTask : public Task {
   LCDView* view = nullptr;
-  String lines[MAX_COLS];
-  int currCol = 0;
+  String lines[MAX_ROWS];
+  int currRow = 0;
 
   public:
     LCDTask();
