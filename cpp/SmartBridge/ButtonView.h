@@ -5,10 +5,10 @@
 #include "Arduino.h"
 
 class ButtonView : public BaseView {
-    public:
-        static bool checkPress(int pin){
-            return digitalRead(pin);
-        }
+  public:
+    static bool checkPress(int pin){
+      return digitalRead(pin);
+    }
 };
 
 #endif

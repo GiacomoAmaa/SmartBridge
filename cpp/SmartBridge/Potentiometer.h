@@ -5,12 +5,12 @@
 #define POT_MAX_VALUE 1024
 
 class Potentiometer {
-    int pin;
+  int pin;
 
-    public:
-        Potentiometer(int pin);
-        void init();
-        int getRotation();
+  public:
+    Potentiometer(int pin);
+    void init();
+    int getRotation();
 };
 
 #endif

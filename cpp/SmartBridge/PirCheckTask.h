@@ -7,14 +7,14 @@
 #define CALIBRATION_TIME 10
 
 class PirCheckTask : public Task {
-    bool detected = false;
-    int pirPin;
+  bool detected = false;
+  int pirPin;
 
-    public:
-        PirCheckTask(int pirPin);
-        bool isMovementDetected();
-        void init(int period);
-        void tick();
+  public:
+    PirCheckTask(int pirPin);
+    bool isMovementDetected();
+    void init(int period);
+    void tick();
 };
 
 #endif

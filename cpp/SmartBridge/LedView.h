@@ -4,14 +4,14 @@
 #include "BaseView.h"
 
 class LedView : public BaseView{
-    public:
-        static void setLedState(int pin, LedState state) {
-            if (state == ON) {
-                digitalWrite(pin, HIGH);
-                return;
-            }
-            digitalWrite(pin, LOW);
-        }
+  public:
+    static void setLedState(int pin, LedState state) {
+      if (state == ON) {
+        digitalWrite(pin, HIGH);
+        return;
+      }
+      digitalWrite(pin, LOW);
+    }
 };
 
 #endif

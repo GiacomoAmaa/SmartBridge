@@ -7,19 +7,19 @@
 typedef enum{OUT, IN} Mode;
 
 class BaseView {
-    public:
-        static void setupPin(int pin, Mode mode) {
-            if (mode == IN) {
-                pinMode(pin, INPUT);
-            }
-            if (mode == OUT) {
-                pinMode(pin, OUTPUT);
-            }
-        }
+  public:
+    static void setupPin(int pin, Mode mode) {
+      if (mode == IN) {
+        pinMode(pin, INPUT);
+      }
+      if (mode == OUT) {
+        pinMode(pin, OUTPUT);
+      }
+    }
 
-        static void printLog(String message) {
-            Serial.println(message);
-        }
+    static void printLog(String message) {
+      Serial.println(message);
+    }
 };
 
 #endif

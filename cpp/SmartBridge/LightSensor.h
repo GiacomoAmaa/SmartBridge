@@ -7,12 +7,12 @@
 #define MAX_LIGHT_VALUE 1000
 
 class LightSensor {
-    int pin;
+  int pin;
 
-    public:
-        LightSensor(int pin);
-        int getPin();
-        int calculateLightLevel(int rawVal);
+  public:
+    LightSensor(int pin);
+    int getPin();
+    int calculateLightLevel(int rawVal);
 };
 
 #endif

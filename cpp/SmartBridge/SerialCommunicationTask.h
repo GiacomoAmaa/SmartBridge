@@ -13,28 +13,29 @@
 
 
 class SerialCommunicationTask : public Task {
-    AlarmState* alertState = nullptr;
-    SonarCheckTask* waterLvl = nullptr;
-    ServoControlTask* valve = nullptr;
-    LightCheckTask* luminosity = nullptr;
-    LedPowerTask* light = nullptr;
+  AlarmState* alertState = nullptr;
+  SonarCheckTask* waterLvl = nullptr;
+  ServoControlTask* valve = nullptr;
+  LightCheckTask* luminosity = nullptr;
+  LedPowerTask* light = nullptr;
 
-    String alertStateToString(){
-      String msg = "NORMAL";
-      if (*alertState == PREALARM) {
-        msg = "PREALARM";
-      }
-      if (*alertState == ALARM) {
-        msg = "ALARM";
-      }
-      return msg;
+  String alertStateToString(){
+    String msg = "NORMAL";
+    if (*alertState == PREALARM) {
+      msg = "PREALARM";
     }
-    public:
-        SerialCommunicationTask(AlarmState* currState);
+    if (*alertState == ALARM) {
+      msg = "ALARM";
+    }
+    return msg;
+  }
 
-        void init(int period, SonarCheckTask* waterLvl, ServoControlTask* valve,
-         LightCheckTask* luminosity, LedPowerTask* light);
-        void tick();
+  public:
+    SerialCommunicationTask(AlarmState* currState);
+
+    void init(int period, SonarCheckTask* waterLvl, ServoControlTask* valve,
+    LightCheckTask* luminosity, LedPowerTask* light);
+    void tick();
 };
 
 #endif

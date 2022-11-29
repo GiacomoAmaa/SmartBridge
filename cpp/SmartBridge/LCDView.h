@@ -9,11 +9,12 @@
 #define COLS 4
 
 class LCDView : public BaseView {
-    LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, ROWS, COLS);
-    public:
-        void init();
-        void printScreen(int col, String msg);
-        void clean();
+  LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, ROWS, COLS);
+
+  public:
+    void init();
+    void printScreen(int col, String msg);
+    void clean();
 };
 
 #endif

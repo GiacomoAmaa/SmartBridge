@@ -5,10 +5,10 @@
 #include "Arduino.h"
 
 class PotentiometerView : public BaseView {
-    public:
-        static int checkRotation(int pin) {
-            return analogRead(pin);
-        }
+  public:
+    static int checkRotation(int pin) {
+      return analogRead(pin);
+    }
 };
 
 #endif

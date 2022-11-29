@@ -5,14 +5,14 @@
 #define MAX_DISTANCE 343 //cm traveled in 0,02 s
 
 class Sonar {
-    int trigPin;
-    int echoPin;
+  int trigPin;
+  int echoPin;
 
-    public:
-        Sonar(int trigPin, int echoPin);
-        int getTrigPin();
-        int getEchoPin();
-        int calculateDistance(double rawVal);
+  public:
+    Sonar(int trigPin, int echoPin);
+    int getTrigPin();
+    int getEchoPin();
+    int calculateDistance(double rawVal);
 };
 
 #endif

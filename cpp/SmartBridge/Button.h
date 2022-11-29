@@ -2,12 +2,12 @@
 #define __BUTTON__
 
 class Button {
-    int pin;
+  int pin;
 
-    public: 
-        Button(int pin);
-        void init();
-        bool isPressed();
+  public:
+    Button(int pin);
+    void init();
+    bool isPressed();
 };
 
 #endif

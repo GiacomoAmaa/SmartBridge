@@ -1,7 +1,7 @@
 #include "SerialCommunicationTask.h"
 
 SerialCommunicationTask::SerialCommunicationTask(AlarmState* currState) {
-    this->alertState = currState;
+  this->alertState = currState;
 }
 
 void SerialCommunicationTask::init(int period, SonarCheckTask* waterLvl,

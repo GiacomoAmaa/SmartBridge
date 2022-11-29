@@ -4,10 +4,10 @@
 #include "BaseView.h"
 
 class LightSensorView : public BaseView {
-    public:
-        static int measure(int pin) {
-            return analogRead(pin);
-        }
+  public:
+    static int measure(int pin) {
+      return analogRead(pin);
+    }
 };
 
 #endif
