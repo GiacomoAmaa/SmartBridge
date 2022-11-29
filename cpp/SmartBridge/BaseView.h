@@ -2,6 +2,7 @@
 #define __VIEW__
 
 #include "Arduino.h"
+#include "Config.h"
 
 typedef enum{OUT, IN} Mode;
 

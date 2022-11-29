@@ -17,10 +17,14 @@ void LightCheckTask::setPeriod(int period) {
 void LightCheckTask::init(int period) {
     setPeriod(period);
     LightSensorView::setupPin(ls->getPin(), IN);
+    #ifdef DEBUG
     BaseView::printLog("Fotoresistor initialization complete");
+    #endif
 }
 
 void LightCheckTask::tick() {
     currLight = ls->calculateLightLevel(LightSensorView::measure(ls->getPin()));
+    #ifdef DEBUG
     BaseView::printLog("Light intensity: " + String(currLight));
+    #endif
 }

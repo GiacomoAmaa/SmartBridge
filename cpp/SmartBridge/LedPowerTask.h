@@ -28,9 +28,11 @@ class LedPowerTask : public Task {
     }
 
     void printLedState() {
+      #ifdef DEBUG
       for (int i=0; i<nleds; i++){
         BaseView::printLog("Led " + String(i+1) + " - " + (leds[i].isOn() ? "ON" : "OFF"));
       }
+      #endif
     }
 
     void blinkLed(Led* led) {

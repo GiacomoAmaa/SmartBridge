@@ -1,4 +1,4 @@
-#define BASE_PERIOD 150
+#define BASE_PERIOD 500
 #define NUM_LEDS 3
 #define LED_A_PIN 13
 #define LED_B_PIN 12
@@ -10,3 +10,4 @@
 #define PIR_PIN 2
 #define LIGHT_PIN A0
 #define POTENTIOMETER_PIN A1
+//#define DEBUG /*WARNING when uncommented javaGUI doesn't work*/

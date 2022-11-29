@@ -257,13 +257,13 @@ public final class SmartBridgeGUI extends JFrame {
 	}
 	
 	/**
-	 * Method to setup the gui for the disabled/lost connestion
+	 * Method to setup the gui for the disabled/lost connection
 	 */
 	private void stopConnection() {
 		threadRun = false;
 		timeElapsed = 0;
 		cleanChart();
-		serialChannel.sendMsg("auto");
+		serialChannel.sendMsg("AUTO");
 		serialChannel.close();
 		connect.setText("Connect");
 		ports.setEnabled(true);
@@ -277,8 +277,8 @@ public final class SmartBridgeGUI extends JFrame {
 		takeControl.setText("Back to Auto");
 		valveOpening.setEnabled(true);
 		confirm.setEnabled(true);
-		statesTable.setValueAt("remote", 0, 2);
-		serialChannel.sendMsg("remote");
+		statesTable.setValueAt("REMOTE", 0, 2);
+		serialChannel.sendMsg("REMOTE");
 	}
 	
 	/**
@@ -288,13 +288,15 @@ public final class SmartBridgeGUI extends JFrame {
 		takeControl.setText("Take valve control");
 		valveOpening.setEnabled(false);
 		confirm.setEnabled(false);
-		statesTable.setValueAt("auto", 0, 2);
-		serialChannel.sendMsg("auto");
+		statesTable.setValueAt("AUTO", 0, 2);
+		serialChannel.sendMsg("AUTO");
 	}
 	
 	private void checkAlarm() {
-		if(dataRead.get(DataRead.ALERT_STATE).equals("alarm")) {
+		if(dataRead.get(DataRead.ALERT_STATE).equals("ALARM")) {
 			takeControl.setEnabled(true);
+		} else {
+			disableValveControl();
 		}
 	}
 	
