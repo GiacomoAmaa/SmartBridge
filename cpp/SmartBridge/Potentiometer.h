@@ -10,6 +10,9 @@ class Potentiometer {
   public:
     Potentiometer(int pin);
     void init();
+    /**
+    * wrapped method to read potentiometer value
+    */
     int getRotation();
 };
 

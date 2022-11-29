@@ -5,6 +5,9 @@
 
 class LightSensorView : public BaseView {
   public:
+    /**
+    * Reads the value from the analog input
+    */
     static int measure(int pin) {
       return analogRead(pin);
     }

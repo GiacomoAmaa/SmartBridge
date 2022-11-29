@@ -14,7 +14,13 @@ class LCDView : public BaseView {
 
   public:
     void init();
+    /**
+    * prints the given string at the given coordinates on lcd screen
+    */
     void printLayout(int col, int row, String msg);
+    /**
+    * cleans up the lcd screen
+    */
     void clean();
 };
 

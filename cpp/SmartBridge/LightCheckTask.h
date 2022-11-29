@@ -13,7 +13,13 @@ class LightCheckTask : public Task {
 
 	public:
 		LightCheckTask(int pinLs);
+    /**
+    * returns the current light in percentage from 0 to 100
+    */
 		int getLightLevel();
+    /**
+    * Sets the period of time for light sampling
+    */
 		void setPeriod(int period);
 		void init(int period);
 		void tick();

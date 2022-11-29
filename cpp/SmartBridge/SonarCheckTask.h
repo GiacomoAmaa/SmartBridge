@@ -27,6 +27,9 @@ class SonarCheckTask : public Task{
   int prealarm;
   int normal;
 
+  /**
+  * updates the current water level tier from the distance
+  */
   void updateWaterLevel(int distance) {
     currDistance = distance;
     currHeightLvl = map(distance, MIN_DISTANCE, MAX_DISTANCE, WATER_LEVEL_MAX, WATER_LEVEL_MIN);
@@ -45,7 +48,13 @@ class SonarCheckTask : public Task{
   public:
     SonarCheckTask(AlarmState* currState, int trigPin, int echoPin);
     void init(int period, LCDTask* display);
+    /**
+    * returns the current water distance
+    */
     double getCurrentWaterDist();
+    /**
+    * gets the current water level in percentage
+    */
     int getCurrentHeightLvl();
     void tick();
 };

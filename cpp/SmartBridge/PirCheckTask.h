@@ -12,6 +12,9 @@ class PirCheckTask : public Task {
 
   public:
     PirCheckTask(int pirPin);
+    /**
+    * Returns true if a moovement is detected
+    */
     bool isMovementDetected();
     void init(int period);
     void tick();

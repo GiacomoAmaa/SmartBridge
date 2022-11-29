@@ -11,7 +11,13 @@ class LightSensor {
 
   public:
     LightSensor(int pin);
+    /**
+    * returns the pin of the light sensor
+    */
     int getPin();
+    /**
+    * Calculates the light level from the analog input value
+    */
     int calculateLightLevel(int rawVal);
 };
 

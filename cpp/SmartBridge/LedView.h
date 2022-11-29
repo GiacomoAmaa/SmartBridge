@@ -5,6 +5,9 @@
 
 class LedView : public BaseView{
   public:
+  /**
+  * Turns on/off  the led assigned at the given pin
+  */
     static void setLedState(int pin, LedState state) {
       if (state == ON) {
         digitalWrite(pin, HIGH);
