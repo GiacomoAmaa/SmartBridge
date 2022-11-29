@@ -15,3 +15,4 @@ void LCDView::clean(){
   lcd.clear();
   lcd.noBacklight();
 }
+

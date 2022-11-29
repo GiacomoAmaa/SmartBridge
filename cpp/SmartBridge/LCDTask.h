@@ -4,7 +4,8 @@
 #include "LCDView.h"
 #include "Task.h"
 
-#define MAX_COLS 10
+#define MAX_ROWS 2
+#define MAX_COLS 16
 
 class LCDTask : public Task {
   LCDView* view = nullptr;

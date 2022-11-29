@@ -9,6 +9,7 @@
 #define COLS 4
 
 class LCDView : public BaseView {
+
   LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, ROWS, COLS);
 
   public:
