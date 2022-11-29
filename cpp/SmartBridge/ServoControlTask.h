@@ -29,7 +29,6 @@ class ServoControlTask : public Task {
   int currAngle = 0;
   int pin;
 
-<<<<<<< HEAD
   void setServoPosition(int angle) {
     float coeff = (2250.0-750.0)/180;
     servoM->attach(pin);
