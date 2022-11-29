@@ -40,12 +40,14 @@ void ServoControlTask::tick() {
       default:
         angle(angleFromWaterLvl(sonar->getCurrentHeightLvl()));
         buttonSetMode(MANUAL);
+        mode = "AUTO";
         break;
     }
     BaseView::printLog("Valve control mode: " + mode);
     lcd->appendMsg("Valve: " + String(currAngle) + "degrees");
     } else {
       currControl = AUTO;
+      mode = "AUTO";
       angle(VALVE_MIN);
   }
 }
