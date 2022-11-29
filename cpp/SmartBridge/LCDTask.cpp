@@ -20,6 +20,7 @@ void LCDTask::appendMsg(String msg) {
 void LCDTask::tick() {
   view->clean();
   for (int i=0; i<currRow; i++){
+    BaseView::printLog("LCD Line " + String(i) + ": " + lines[i]);
     view->printScreen(i, lines[i]);
   }
   currRow = 0;

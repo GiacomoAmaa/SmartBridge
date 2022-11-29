@@ -9,7 +9,6 @@ ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
 }
 
 void ServoControlTask::angle(int angle) {
-  BaseView::printLog("angle: "+String(angle));
   if (angle < VALVE_MIN || angle > VALVE_MAX || currAngle == angle) {
     return;
   }
