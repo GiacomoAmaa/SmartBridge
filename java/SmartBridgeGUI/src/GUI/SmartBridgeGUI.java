@@ -3,6 +3,7 @@ package GUI;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -18,6 +19,7 @@ import comunication.DataRead;
 import comunication.SerialCommChannel;
 import comunication.StringParser;
 import comunication.StringParserImpl;
+import jssc.SerialPortException;
 import jssc.SerialPortList;
 
 import java.awt.event.ActionEvent;
@@ -92,8 +94,8 @@ public final class SmartBridgeGUI extends JFrame {
 	 * Restores the default values in the data structure that contains read data
 	 */
 	private void initData() {
-		dataRead = Map.of(DataRead.ALERT_STATE, "normal", DataRead.LIGHTING, "off",
-				DataRead.VALVE_CONTROL, "auto", DataRead.WATER_LEVEL, "0",
+		dataRead = Map.of(DataRead.ALERT_STATE, "NORMAL", DataRead.LIGHTING, "OFF",
+				DataRead.VALVE_CONTROL, "AUTO", DataRead.WATER_LEVEL, "0",
 				DataRead.LIGHT_LEVEL, "0", DataRead.VALVE_OPENING, "0");
 	}
 	
@@ -264,7 +266,11 @@ public final class SmartBridgeGUI extends JFrame {
 		timeElapsed = 0;
 		cleanChart();
 		serialChannel.sendMsg("AUTO");
-		serialChannel.close();
+		try {
+			serialChannel.close();
+		} catch (SerialPortException e) {
+			JOptionPane.showMessageDialog(this,"Connection lost","ERROR",JOptionPane.ERROR_MESSAGE);
+		}
 		connect.setText("Connect");
 		ports.setEnabled(true);
 		disableValveControl();
