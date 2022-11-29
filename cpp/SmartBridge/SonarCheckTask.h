@@ -12,8 +12,8 @@
 #define WATER_LEVEL_PREALARM 50
 #define WATER_LEVEL_MIN 0
 
-#define PREALARM_PERIOD 15
-#define ALARM_PERIOD 25
+#define PREALARM_PERIOD 100
+#define ALARM_PERIOD 200
 
 class SonarCheckTask : public Task{
   AlarmState* currState = nullptr;

@@ -36,7 +36,7 @@ void SonarCheckTask::tick() {
         Task::setPeriod(prealarm);
       }
       *currState = PREALARM;
-      display->appendMsg(String(currDistance)+"cm");
+      display->appendMsg(String(currDistance));
       break;
     case 2:
       if (*currState != ALARM) {
@@ -44,7 +44,7 @@ void SonarCheckTask::tick() {
         Task::setPeriod(alarm);
       }
       *currState = ALARM;
-      display->appendMsg(String(currDistance)+"cm");
+      display->appendMsg(String(currDistance));
       break;
     default:
       if (*currState != NORMAL) {

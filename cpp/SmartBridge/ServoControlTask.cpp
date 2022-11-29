@@ -53,7 +53,7 @@ void ServoControlTask::tick() {
         break;
     }
     BaseView::printLog("Valve control mode: " + mode);
-    lcd->appendMsg(String(currAngle) + "deg");
+    lcd->appendMsg(String(currAngle));
     } else {
       currControl = AUTO;
       mode = "AUTO";
