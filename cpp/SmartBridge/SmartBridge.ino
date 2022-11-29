@@ -59,10 +59,10 @@ void setup(){
   taskmgr.addTask(lightTask);
   taskmgr.addTask(pirTask);
   taskmgr.addTask(sonarTask);
+  taskmgr.addTask(serialComm);
   taskmgr.addTask(servoTask);
   taskmgr.addTask(ledTask);
   taskmgr.addTask(lcd);
-  taskmgr.addTask(serialComm);
 }
 
 void loop(){
