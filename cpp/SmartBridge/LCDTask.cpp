@@ -20,7 +20,7 @@ void LCDTask::appendMsg(String msg) {
 }
 
 void LCDTask::tick() {
-  switch(currState) {
+  switch(*currState) {
     case PREALARM:
       if(stateChanged()){
         prevState = *currState;
