@@ -234,6 +234,8 @@ public final class SmartBridgeGUI extends JFrame {
 							stopConnection();
 							timeElapsed = -SmartBridgeGUI.FSM_CLOCK_TIME;
 							System.err.println("Interrupted while waiting for serial data...");
+						} catch (ArrayIndexOutOfBoundsException ea) {
+							System.err.println("Couldn't read received output...");
 						}
 						timeElapsed += SmartBridgeGUI.FSM_CLOCK_TIME;
 					}

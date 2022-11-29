@@ -8,7 +8,7 @@ public class StringParserImpl implements StringParser {
 	public StringParserImpl() {
 	}
 	
-	public Map<DataRead, String> parse(String msg) {
+	public Map<DataRead, String> parse(String msg) throws ArrayIndexOutOfBoundsException {
 		final String[] parsed = msg.split(StringParserImpl.SEPARATOR);
 		return Map.of(DataRead.ALERT_STATE, parsed[0], DataRead.LIGHTING, parsed[1],
 				DataRead.VALVE_CONTROL, parsed[2], DataRead.WATER_LEVEL, parsed[3],
