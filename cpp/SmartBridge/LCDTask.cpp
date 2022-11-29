@@ -7,20 +7,20 @@ LCDTask::LCDTask() {
 
 void LCDTask::init(int period) {
     Task::init(period);
-    view->init();
+    view->init(MAX_COLS, MAX_ROWS);
     view->clean();
     BaseView::printLog("LCD initialization complete");
 }
 
 void LCDTask::appendMsg(String msg) {
-    lines[currCol] = msg;
-    currCol++;
+    lines[currRow] = msg;
+    currRow++;
 }
 
 void LCDTask::tick() {
     view->clean();
-    for (int i=0; i<currCol; i++){
+    for (int i=0; i<currRow; i++){
       view->printScreen(i, lines[i]);
     }
-    currCol = 0;
+    currRow = 0;
 }

@@ -11,7 +11,7 @@
 class LCDView : public BaseView {
     LiquidCrystal_I2C lcd = LiquidCrystal_I2C(ADDRESS, ROWS, COLS);
     public:
-        void init();
+        void init(int cols, int rows);
         void printScreen(int col, String msg);
         void clean();
 };
