@@ -64,16 +64,13 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 	/**
 	 * This should be called when you stop using the port.
 	 * This will prevent port locking on platforms like Linux.
+	 * @throws SerialPortException 
 	 */
-	public void close() {
-		try {
+	public void close() throws SerialPortException {
 			if (serialPort != null) {
 				serialPort.removeEventListener();
 				serialPort.closePort();
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 

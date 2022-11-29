@@ -1,4 +1,4 @@
-#define BASE_PERIOD 500
+#define BASE_PERIOD 150
 #define NUM_LEDS 3
 #define LED_A_PIN 13
 #define LED_B_PIN 12
