@@ -58,3 +58,7 @@ int ServoControlTask::getCurrValveOpening() {
 String ServoControlTask::getValveControl(){
   return mode;
 }
+
+void ServoControlTask::setValveControl(ServoControl crtl){
+  currControl = crtl;
+}

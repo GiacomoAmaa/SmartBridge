@@ -62,6 +62,7 @@ class ServoControlTask : public Task {
         void tick();
         int getCurrValveOpening();
         String getValveControl();
+        void setValveControl(ServoControl crtl);
 };
 
 #endif

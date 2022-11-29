@@ -20,8 +20,16 @@ void SerialCommunicationTask::tick() {
     + SEP + String(waterLvl->getCurrentHeightLvl()) 
     + SEP + String(luminosity->getLightLevel())
     + SEP + String(valve->getCurrValveOpening()));
+    
   if(MsgService.isMsgAvailable()){
     Msg* msg = MsgService.receiveMsg();
-    msg->getContent();
+    String info = msg->getContent();
+    if(info.equals("AUTO")) {
+      valve->setValveControl(AUTO);
+    } else if(info.equals("REMOTE")){
+      valve->setValveControl(REMOTE);
+    } else {
+      valve->angle(map(info.toInt(),0,100,VALVE_MIN,VALVE_MAX));
+    }
   }
 }
