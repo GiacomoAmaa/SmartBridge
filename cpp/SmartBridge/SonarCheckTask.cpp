@@ -23,9 +23,7 @@ void SonarCheckTask::init(int period, LCDTask* display) {
   alarm = normal - ALARM_PERIOD;
 
   SonarView::setupPin(sonar->getTrigPin(), sonar->getEchoPin());
-  #ifdef DEBUG
-    BaseView::printLog("Sonar initialization complete");
-  #endif
+  BaseView::printLog("Sonar initialization complete");
 }
 
 void SonarCheckTask::tick() {
@@ -34,9 +32,7 @@ void SonarCheckTask::tick() {
   switch(currWaterLevel) {
     case 1:
       if (*currState != PREALARM) {
-        #ifdef DEBUG
-          BaseView::printLog("Alarm state changed to PREALARM");
-        #endif
+        BaseView::printLog("Alarm state changed to PREALARM");
         Task::setPeriod(prealarm);
       }
       *currState = PREALARM;
@@ -44,9 +40,7 @@ void SonarCheckTask::tick() {
       break;
     case 2:
       if (*currState != ALARM) {
-        #ifdef DEBUG
-          BaseView::printLog("Alarm state changed to ALARM");
-        #endif
+        BaseView::printLog("Alarm state changed to ALARM");
         Task::setPeriod(alarm);
       }
       *currState = ALARM;
@@ -54,9 +48,7 @@ void SonarCheckTask::tick() {
       break;
     default:
       if (*currState != NORMAL) {
-        #ifdef DEBUG
-          BaseView::printLog("Alarm state changed to NORMAL");
-        #endif
+        BaseView::printLog("Alarm state changed to NORMAL");
         Task::setPeriod(normal);
       }
       *currState = NORMAL;

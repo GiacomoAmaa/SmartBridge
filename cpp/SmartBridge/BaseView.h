@@ -18,7 +18,9 @@ class BaseView {
     }
 
     static void printLog(String message) {
-      Serial.println(message);
+      #ifdef DEBUG
+        Serial.println(message);
+      #endif
     }
 };
 
