@@ -8,11 +8,16 @@ class LCDTask : public Task {
   LCDView* view = nullptr;
   String lines[MAX_ROWS];
   int currRow = 0;
+  AlarmState* currState = nullptr;
+  AlarmState prevState = null;
+
+  bool stateChanged(){
+    return *currState == prevState;
+  }
 
   public:
-    LCDTask();
+    LCDTask(AlarmState* currState);
     void init(int period);
-    void appendMsg(String msg);
     void tick();
 };
 

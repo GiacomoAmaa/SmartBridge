@@ -44,7 +44,7 @@ void setup(){
   LedPowerTask* ledTask = new LedPowerTask(&state, leds, NUM_LEDS);
   LightCheckTask* lightTask = new LightCheckTask(LIGHT_PIN);
   PirCheckTask* pirTask = new PirCheckTask(PIR_PIN);
-  LCDTask* lcd = new LCDTask();
+  LCDTask* lcd = new LCDTask(&state);
   SerialCommunicationTask* serialComm = new SerialCommunicationTask(&state);
 
   taskmgr.init(BASE_PERIOD);

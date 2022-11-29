@@ -5,7 +5,7 @@ void LCDView::init() {
   lcd.backlight();
 }
 
-void LCDView::printScreen(int row, String msg) {
+void LCDView::printLayout(int row, String msg) {
   lcd.setCursor(0, row);
   lcd.print(msg);
 }

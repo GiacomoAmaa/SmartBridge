@@ -14,7 +14,7 @@ class LCDView : public BaseView {
 
   public:
     void init();
-    void printScreen(int row, String msg);
+    void printLayout(int row, String msg);
     void clean();
 };
 
