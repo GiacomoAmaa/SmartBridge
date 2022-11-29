@@ -33,7 +33,7 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
 
 void ServoControlTask::tick() {
     if (*currState == ALARM) {
-        switch(currControl){
+        switch(currControl) {
           case MANUAL: 
             angle(angleFromRotation(pot->getRotation()));
             buttonSetMode(AUTO);
@@ -47,9 +47,7 @@ void ServoControlTask::tick() {
             buttonSetMode(MANUAL);
             break;
         }
-        #ifdef DEBUG
         BaseView::printLog("Valve control mode: " + mode);
-        #endif
         lcd->appendMsg("Valve: " + String(currAngle) + "degrees");
     } else {
         currControl = AUTO;

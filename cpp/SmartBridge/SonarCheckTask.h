@@ -30,9 +30,7 @@ class SonarCheckTask : public Task{
     void updateWaterLevel(int distance) {
         currDistance = distance;
         currHeightLvl = map(distance, MIN_DISTANCE, MAX_DISTANCE, WATER_LEVEL_MAX, WATER_LEVEL_MIN);
-        #ifdef DEBUG
         BaseView::printLog("Water distance: " + String(currDistance) + " cm");
-        #endif
         if (currHeightLvl >= WATER_LEVEL_PREALARM && currHeightLvl < WATER_LEVEL_ALARM) {
             currWaterLevel = 1;
             return;

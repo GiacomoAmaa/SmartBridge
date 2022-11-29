@@ -9,9 +9,7 @@ void LCDTask::init(int period) {
     Task::init(period);
     view->init();
     view->clean();
-    #ifdef DEBUG
     BaseView::printLog("LCD initialization complete");
-    #endif
 }
 
 void LCDTask::appendMsg(String msg) {

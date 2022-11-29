@@ -35,9 +35,7 @@ class ServoControlTask : public Task {
         servoM->write(750 + angle*coeff);
         delay(DELAY_SERVO);
         servoM->detach();
-        #ifdef DEBUG
         BaseView::printLog("Valve angle set to " + String(currAngle) + " degrees");
-        #endif
     }
 
     int angleFromRotation(int rotation) {
