@@ -13,7 +13,7 @@ class LCDTask : public Task {
   AlarmState prevState;
 
   bool stateChanged(){
-    return *currState == prevState;
+    return *currState != prevState;
   }
 
   public:

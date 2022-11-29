@@ -26,24 +26,20 @@ void LCDTask::tick() {
         prevState = *currState;
         view->clean();
         view->printLayout(0, 0, "PREALARM");
-        view->printLayout(0, 1, "WL: ");
-        view->printLayout(MAX_COLS-2, 1, "cm");
+        view->printLayout(0, 1, "Water:    cm");
       }
-      view->printLayout(5, 1, lines[0]);
+      view->printLayout(7, 1, lines[0]);
       break;
     case ALARM:
       if(stateChanged()){
         prevState = *currState;
         view->clean();
         view->printLayout(0, 0, "ALARM");
-        view->printLayout(0, 1, "WL:");
-        view->printLayout(MAX_COLS/2-2, 1, "cm ");
-        view->printLayout(MAX_COLS/2+1, 1, "V:");
-        view->printLayout(MAX_COLS-1, 1, "°");
+        view->printLayout(0, 1, "WL:   cm VOP:");
       }
-      view->printLayout(4, 1, lines[0]);
-      view->printLayout(MAX_COLS/2+3, 1, lines[1]);
-      break;
+      view->printLayout(3, 1, lines[0] + " ");
+      view->printLayout(MAX_COLS - 3, 1, lines[1] + "  ");
+      break; 
     default:
       if(stateChanged()){
         prevState = *currState;
@@ -51,11 +47,5 @@ void LCDTask::tick() {
       }
       break;
   }
-  /*
-  view->clean();
-  for (int i=0; i<currRow; i++){
-    BaseView::printLog("LCD Line " + String(i) + ": " + lines[i]);
-    view->printScreen(i, lines[i]);
-  }*/
   currRow = 0;
 }
