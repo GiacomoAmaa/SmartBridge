@@ -8,14 +8,6 @@ ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
   this->servoM=new Servo();
 }
 
-void ServoControlTask::angle(int angle) {
-  if (angle < VALVE_MIN || angle > VALVE_MAX || currAngle == angle) {
-    return;
-  }
-  currAngle = angle;
-  setServoPosition(angle);
-}
-
 void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd) {
   Task::init(period);
   this->sonar=sonar;
@@ -24,6 +16,22 @@ void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn,
   this->lcd=lcd;
   angle(currAngle);
   BaseView::printLog("Servo initialization complete");
+}
+
+int ServoControlTask::getCurrValveOpening() {
+  return map(currAngle, VALVE_MIN, VALVE_MAX, 0, 100);
+}
+
+String ServoControlTask::getValveControl(){
+  return mode;
+}
+
+void ServoControlTask::setValveControl(ServoControl crtl){
+  currControl = crtl;
+}
+
+void ServoControlTask::setRemoteAngle(int angle) {
+  remoteAngle = angle;
 }
 
 void ServoControlTask::tick() {
@@ -35,6 +43,7 @@ void ServoControlTask::tick() {
         mode = "MANUAL";
         break;
       case REMOTE:
+        angle(angleFromPercentage(remoteAngle));
         mode = "REMOTE";
         break;
       default:
@@ -50,16 +59,4 @@ void ServoControlTask::tick() {
       mode = "AUTO";
       angle(VALVE_MIN);
   }
-}
-
-int ServoControlTask::getCurrValveOpening() {
-  return map(currAngle, VALVE_MIN, VALVE_MAX, 0, 100);
-}
-
-String ServoControlTask::getValveControl(){
-  return mode;
-}
-
-void ServoControlTask::setValveControl(ServoControl crtl){
-  currControl = crtl;
 }

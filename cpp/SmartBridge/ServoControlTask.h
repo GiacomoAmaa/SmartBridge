@@ -26,10 +26,16 @@ class ServoControlTask : public Task {
   ServoControl currControl;
   String mode = "AUTO";
   bool btnHold = false;
+  int remoteAngle = 0;
   int currAngle = 0;
   int pin;
 
-  void setServoPosition(int angle) {
+  void angle(int angle) {
+    if (angle < VALVE_MIN || angle > VALVE_MAX || currAngle == angle) {
+      return;
+    }
+    currAngle = angle;
+
     float coeff = (2250.0-750.0)/180;
     servoM->attach(pin);
     servoM->write(750 + angle*coeff);
@@ -46,6 +52,10 @@ class ServoControlTask : public Task {
     return map(waterLevel, WATER_LEVEL_ALARM, WATER_LEVEL_MAX, VALVE_MIN, VALVE_MAX);
   }
 
+  int angleFromPercentage(int percentage) {
+    return map(percentage,0,100,VALVE_MIN,VALVE_MAX);
+  }
+
   void buttonSetMode(ServoControl crtl) {
     if (inputBtn->isPressed() && !btnHold)  {
       btnHold = true;
@@ -57,12 +67,12 @@ class ServoControlTask : public Task {
 
     public:
       ServoControlTask(AlarmState* currState, int pin);
-      void angle(int angle);
       void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd);
-      void tick();
       int getCurrValveOpening();
       String getValveControl();
       void setValveControl(ServoControl crtl);
+      void setRemoteAngle(int angle);
+      void tick();
 };
 
 #endif

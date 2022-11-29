@@ -29,7 +29,7 @@ void SerialCommunicationTask::tick() {
     } else if(info.equals("REMOTE")){
       valve->setValveControl(REMOTE);
     } else {
-      valve->angle(map(info.toInt(),0,100,VALVE_MIN,VALVE_MAX));
+      valve->setRemoteAngle(info.toInt());
     }
   }
 }
