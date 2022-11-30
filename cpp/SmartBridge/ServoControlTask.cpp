@@ -52,7 +52,7 @@ void ServoControlTask::tick() {
         break;
     }
     BaseView::printLog("Valve control mode: " + mode);
-    } else {
+  } else {
       currControl = AUTO;
       mode = "AUTO";
       angle(VALVE_MIN);
