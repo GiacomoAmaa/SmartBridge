@@ -4,7 +4,6 @@
 #include "Servo.h"
 #include "Task.h"
 #include "AlarmState.h"
-#include "LCDTask.h"
 #include "SonarCheckTask.h"
 #include "Button.h"
 #include "Potentiometer.h"
@@ -19,7 +18,6 @@ typedef enum {AUTO, MANUAL, REMOTE} ServoControl;
 class ServoControlTask : public Task {
   AlarmState* currState = nullptr;
   SonarCheckTask* sonar = nullptr;
-  LCDTask* lcd = nullptr;
   Potentiometer* pot = nullptr;
   Button* inputBtn = nullptr;
   Servo* servoM = nullptr;
@@ -79,7 +77,7 @@ class ServoControlTask : public Task {
 
     public:
       ServoControlTask(AlarmState* currState, int pin);
-      void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd);
+      void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot);
       /**
       * returns the current valve opening percentage
       */

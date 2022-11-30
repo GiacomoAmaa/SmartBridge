@@ -7,45 +7,31 @@ LCDTask::LCDTask(AlarmState* currState) {
   this->prevState = *currState;
 }
 
-void LCDTask::init(int period) {
+void LCDTask::init(int period, ServoControlTask* servo, SonarCheckTask* sonar) {
   Task::init(period);
   view->init();
   view->clean();
+  this->sonar = sonar;
+  this->servo = servo;
   BaseView::printLog("LCD initialization complete");
 }
 
-void LCDTask::appendMsg(String msg) {
-  lines[currRow] = msg;
-  currRow++;
-}
-
 void LCDTask::tick() {
+  if(stateChanged()){
+    view->clean();
+  }
   switch(*currState) {
     case PREALARM:
-      if(stateChanged()){
-        prevState = *currState;
-        view->clean();
-        view->printLayout(0, 0, "PREALARM");
-        view->printLayout(0, 1, "Water:    cm");
-      }
-      view->printLayout(7, 1, lines[0]);
+      view->printLayout(0,"PREALARM");
+      view->printLayout(1,"WaterLvl:" + String((int)sonar->getCurrentWaterDist()) + "cm");
       break;
     case ALARM:
-      if(stateChanged()){
-        prevState = *currState;
-        view->clean();
-        view->printLayout(0, 0, "ALARM");
-        view->printLayout(0, 1, "WL:   cm VOP:");
-      }
-      view->printLayout(3, 1, lines[0] + " ");
-      view->printLayout(MAX_COLS - 3, 1, lines[1] + "  ");
+      view->printLayout(0, "ALARM");
+      view->printLayout(1,"WL:" + String((int)sonar->getCurrentWaterDist()) + "cm " 
+        + "VO:" + String(servo->getCurrValveOpening()) + "% ");
       break; 
     default:
-      if(stateChanged()){
-        prevState = *currState;
-        view->clean();
-      }
+      view->clean();
       break;
   }
-  currRow = 0;
 }

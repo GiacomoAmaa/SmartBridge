@@ -17,7 +17,7 @@ class LCDView : public BaseView {
     /**
     * prints the given string at the given coordinates on lcd screen
     */
-    void printLayout(int col, int row, String msg);
+    void printLayout(int row, String msg);
     /**
     * cleans up the lcd screen
     */

@@ -4,12 +4,15 @@
 #include "LCDView.h"
 #include "Task.h"
 #include "AlarmState.h"
+#include "SonarCheckTask.h"
+#include "ServoControlTask.h"
 
 class LCDTask : public Task {
   LCDView* view = nullptr;
-  String lines[MAX_ROWS];
-  int currRow = 0;
   AlarmState* currState = nullptr;
+  ServoControlTask* servo = nullptr;
+  SonarCheckTask* sonar = nullptr;
+
   AlarmState prevState;
 
   bool stateChanged(){
@@ -18,8 +21,7 @@ class LCDTask : public Task {
 
   public:
     LCDTask(AlarmState* currState);
-    void appendMsg(String msg);
-    void init(int period);
+    void init(int period, ServoControlTask* servo, SonarCheckTask* sonar);
     void tick();
 };
 

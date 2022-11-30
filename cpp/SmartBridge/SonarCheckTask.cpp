@@ -15,9 +15,8 @@ int SonarCheckTask::getCurrentHeightLvl() {
   return currHeightLvl;
 }
 
-void SonarCheckTask::init(int period, LCDTask* display) {
+void SonarCheckTask::init(int period) {
   Task::init(period);
-  this->display=display;
   normal = period;
   prealarm = normal - PREALARM_PERIOD;
   alarm = normal - ALARM_PERIOD;
@@ -36,7 +35,6 @@ void SonarCheckTask::tick() {
         Task::setPeriod(prealarm);
       }
       *currState = PREALARM;
-      display->appendMsg(String(currDistance));
       break;
     case 2:
       if (*currState != ALARM) {
@@ -44,7 +42,6 @@ void SonarCheckTask::tick() {
         Task::setPeriod(alarm);
       }
       *currState = ALARM;
-      display->appendMsg(String(currDistance));
       break;
     default:
       if (*currState != NORMAL) {

@@ -8,12 +8,11 @@ ServoControlTask::ServoControlTask(AlarmState* currState, int pin) {
   this->servoM=new Servo();
 }
 
-void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd) {
+void ServoControlTask::init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot) {
   Task::init(period);
   this->sonar=sonar;
   this->inputBtn=inputBtn;
   this->pot=pot;
-  this->lcd=lcd;
   angle(currAngle);
   BaseView::printLog("Servo initialization complete");
 }
@@ -53,7 +52,6 @@ void ServoControlTask::tick() {
         break;
     }
     BaseView::printLog("Valve control mode: " + mode);
-    lcd->appendMsg(String(currAngle));
     } else {
       currControl = AUTO;
       mode = "AUTO";

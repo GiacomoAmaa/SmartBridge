@@ -48,13 +48,13 @@ void setup(){
   SerialCommunicationTask* serialComm = new SerialCommunicationTask(&state);
 
   taskmgr.init(BASE_PERIOD);
-  servoTask->init(BASE_PERIOD, sonarTask, button, pot, lcd);
+  servoTask->init(3 * BASE_PERIOD, sonarTask, button, pot);
   ledTask->init(BASE_PERIOD, lightTask, pirTask);
-  sonarTask->init(BASE_PERIOD, lcd);
+  sonarTask->init(BASE_PERIOD);
   lightTask->init(BASE_PERIOD);
-  pirTask->init(BASE_PERIOD);
-  lcd->init(BASE_PERIOD);
-  serialComm->init(BASE_PERIOD, sonarTask, servoTask, lightTask, ledTask);
+  pirTask->init(2 * BASE_PERIOD);
+  lcd->init(3 * BASE_PERIOD, servoTask, sonarTask);
+  serialComm->init(4 * BASE_PERIOD, sonarTask, servoTask, lightTask, ledTask);
 
   taskmgr.addTask(lightTask);
   taskmgr.addTask(pirTask);
