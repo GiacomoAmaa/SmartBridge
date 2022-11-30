@@ -10,4 +10,4 @@
 #define PIR_PIN 2
 #define LIGHT_PIN A0
 #define POTENTIOMETER_PIN A1
-#define DEBUG /*WARNING when uncommented javaGUI doesn't work*/
+//#define DEBUG /*WARNING when uncommented javaGUI doesn't work*/

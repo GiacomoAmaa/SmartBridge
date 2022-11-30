@@ -40,7 +40,7 @@ public final class SmartBridgeGUI extends JFrame {
 	/**
 	 * Finite states machine implemented on arduino clock time
 	 */
-	private static final double FSM_CLOCK_TIME = 0.2;
+	private static final double FSM_CLOCK_TIME = 0.4;
 	
 	/**
 	 * GUI components
