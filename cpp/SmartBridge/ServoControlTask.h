@@ -32,7 +32,7 @@ class ServoControlTask : public Task {
   * applies the given angle on the servo motor
   */
   void angle(int angle) {
-    if (angle < VALVE_MIN || angle > VALVE_MAX || currAngle == angle) {
+    if (angle < VALVE_MIN || angle > VALVE_MAX) {
       return;
     }
     currAngle = angle;

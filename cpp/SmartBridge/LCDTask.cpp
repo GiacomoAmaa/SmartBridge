@@ -23,12 +23,12 @@ void LCDTask::tick() {
   switch(*currState) {
     case PREALARM:
       view->printLayout(0,"PREALARM");
-      view->printLayout(1,"WaterLvl:" + String((int)sonar->getCurrentWaterDist()) + "cm");
+      view->printLayout(1,"WaterLvl:" + String((int)sonar->getCurrentWaterDist()) + "cm ");
       break;
     case ALARM:
       view->printLayout(0, "ALARM");
       view->printLayout(1,"WL:" + String((int)sonar->getCurrentWaterDist()) + "cm " 
-        + "VO:" + String(servo->getCurrValveOpening()) + "% ");
+        + "VO:" + String(map(servo->getCurrValveOpening(), 0, 100, VALVE_MIN, VALVE_MAX)) + "  ");
       break; 
     default:
       view->clean();
