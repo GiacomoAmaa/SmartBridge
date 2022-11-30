@@ -6,6 +6,9 @@
 
 class PirView : public BaseView {
   public:
+    /**
+    * Calibrates the sensors taking ambient samples
+    */
     static void calibrate(int time){
       const int max_line_space = 10;
       #ifdef DEBUG
@@ -24,6 +27,9 @@ class PirView : public BaseView {
       #endif
     }
 
+    /**
+    * Reads the value from the pir's pin
+    */
     static bool checkMovement(int pin) {
       return digitalRead(pin) == HIGH;
     }

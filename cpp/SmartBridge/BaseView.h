@@ -8,6 +8,9 @@ typedef enum{OUT, IN} Mode;
 
 class BaseView {
   public:
+    /**
+    * Sets up the given pin to either I or O
+    */
     static void setupPin(int pin, Mode mode) {
       if (mode == IN) {
         pinMode(pin, INPUT);
@@ -16,7 +19,9 @@ class BaseView {
         pinMode(pin, OUTPUT);
       }
     }
-
+    /**
+    * Prints the given message if the debug sign is defined
+    */
     static void printLog(String message) {
       #ifdef DEBUG
         Serial.println(message);

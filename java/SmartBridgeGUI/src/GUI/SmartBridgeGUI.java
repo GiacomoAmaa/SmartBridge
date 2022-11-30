@@ -40,7 +40,7 @@ public final class SmartBridgeGUI extends JFrame {
 	/**
 	 * Finite states machine implemented on arduino clock time
 	 */
-	private static final double FSM_CLOCK_TIME = 0.15;
+	private static final double FSM_CLOCK_TIME = 0.2;
 	
 	/**
 	 * GUI components
@@ -228,8 +228,10 @@ public final class SmartBridgeGUI extends JFrame {
 			public void run() {
 				while(true) {
 					if(threadRun) {
+						String msg = null;
 						try {
-							dataRead = parser.parse(serialChannel.receiveMsg());
+							msg = serialChannel.receiveMsg();
+							dataRead = parser.parse(msg);
 							update();
 							checkAlarm();
 						} catch (InterruptedException e) {
@@ -238,6 +240,7 @@ public final class SmartBridgeGUI extends JFrame {
 							System.err.println("Interrupted while waiting for serial data...");
 						} catch (ArrayIndexOutOfBoundsException ea) {
 							System.err.println("Couldn't read received output...");
+							System.out.println(msg);
 						}
 						timeElapsed += SmartBridgeGUI.FSM_CLOCK_TIME;
 					}

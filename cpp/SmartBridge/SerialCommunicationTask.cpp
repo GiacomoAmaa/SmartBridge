@@ -31,5 +31,6 @@ void SerialCommunicationTask::tick() {
     } else {
       valve->setRemoteAngle(info.toInt());
     }
+    delete msg;
   }
 }

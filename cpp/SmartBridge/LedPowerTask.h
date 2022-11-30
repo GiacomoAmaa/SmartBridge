@@ -21,12 +21,18 @@ class LedPowerTask : public Task {
   int detecTimeElaps = TIME_INACTIVITY;
   int nleds = 0;
 
+  /**
+  * Turns on/off the leds according to their logic state
+  */
   void updateLeds() {
     for (int i=0; i<nleds; i++){
       LedView::setLedState(leds[i].getPin(), leds[i].isOn() ? ON : OFF);
     }
   }
 
+  /**
+  * prints the led's logic state if debug sign is defined
+  */
   void printLedState() {
     #ifdef DEBUG
       for (int i=0; i<nleds; i++){
@@ -35,6 +41,9 @@ class LedPowerTask : public Task {
     #endif
   }
 
+  /**
+  * Makes the given led blink with constant period
+  */
   void blinkLed(Led* led) {
     blinkTimeElaps += this->getPeriod();
     if (blinkTimeElaps >= BLINK_TIME) {
@@ -47,6 +56,9 @@ class LedPowerTask : public Task {
     }
   }
 
+  /**
+  * Turns on the given led using smart lighing logic
+  */
   void smartLighting(Led* led) {
     int currLight = light->getLightLevel();
 

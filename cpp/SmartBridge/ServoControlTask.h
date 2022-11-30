@@ -30,6 +30,9 @@ class ServoControlTask : public Task {
   int currAngle = 0;
   int pin;
 
+  /**
+  * applies the given angle on the servo motor
+  */
   void angle(int angle) {
     if (angle < VALVE_MIN || angle > VALVE_MAX || currAngle == angle) {
       return;
@@ -44,18 +47,27 @@ class ServoControlTask : public Task {
     BaseView::printLog("Valve angle set to " + String(currAngle) + " degrees");
   }
 
+  /**
+  * calculates the opening angle of the valve from potentiometer input
+  */
   int angleFromRotation(int rotation) {
     return map(rotation, POT_MIN_VALUE, POT_MAX_VALUE, VALVE_MIN, VALVE_MAX);
   }
-
+  /**
+  * calculates the opening angle of the valve from water level
+  */
   int angleFromWaterLvl(int waterLevel) {
     return map(waterLevel, WATER_LEVEL_ALARM, WATER_LEVEL_MAX, VALVE_MIN, VALVE_MAX);
   }
-
+  /**
+  * calculates the opening angle of the valve from the JavaApp data
+  */
   int angleFromPercentage(int percentage) {
     return map(percentage,0,100,VALVE_MIN,VALVE_MAX);
   }
-
+  /**
+  * checks the button for eventual switch to manual mode
+  */
   void buttonSetMode(ServoControl crtl) {
     if (inputBtn->isPressed() && !btnHold)  {
       btnHold = true;
@@ -68,9 +80,21 @@ class ServoControlTask : public Task {
     public:
       ServoControlTask(AlarmState* currState, int pin);
       void init(int period, SonarCheckTask* sonar, Button* inputBtn, Potentiometer* pot, LCDTask* lcd);
+      /**
+      * returns the current valve opening percentage
+      */
       int getCurrValveOpening();
+      /**
+      * returns a string describing the current valve control
+      */
       String getValveControl();
+      /**
+      * sets the valve control mode
+      */
       void setValveControl(ServoControl crtl);
+      /**
+      * sets the remote angle to support remote control
+      */
       void setRemoteAngle(int angle);
       void tick();
 };

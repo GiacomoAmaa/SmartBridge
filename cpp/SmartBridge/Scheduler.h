@@ -14,7 +14,13 @@ class Scheduler {
 
   public:
     void init(int basePeriod);
+    /**
+    * Adds a task to the execution flow
+    */
     virtual bool addTask(Task* task);
+    /**
+    * executes a tick from every task
+    */
     virtual void schedule();
 };
 

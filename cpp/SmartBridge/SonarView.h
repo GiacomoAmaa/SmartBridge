@@ -14,6 +14,9 @@ class SonarView : public BaseView {
       BaseView::setupPin(echoPin, IN);
     }
 
+    /**
+    * returns the reading from the pin to measure distance
+    */
     static float measure(int trigPin, int echoPin) {
       digitalWrite(trigPin,LOW);
       delayMicroseconds(DELAY_HIGH);

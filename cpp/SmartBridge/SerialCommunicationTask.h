@@ -19,6 +19,9 @@ class SerialCommunicationTask : public Task {
   LightCheckTask* luminosity = nullptr;
   LedPowerTask* light = nullptr;
 
+  /**
+  * returns a string describing the current alarm level
+  */
   String alertStateToString(){
     String msg = "NORMAL";
     if (*alertState == PREALARM) {

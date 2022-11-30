@@ -9,10 +9,25 @@ class Led {
     
   public:
     Led(int pin);
+    /**
+    * returns true id the led is on
+    */
     bool isOn();
+    /**
+    * returns true id the led is off
+    */
     bool isOff();
+    /**
+    * returns the pin in which is plugged the led
+    */
     int getPin();
+    /**
+    * Turns on the pin
+    */
     void turnOn();
+    /**
+    * Turns off the pin
+    */
     void turnOff();
 };
 

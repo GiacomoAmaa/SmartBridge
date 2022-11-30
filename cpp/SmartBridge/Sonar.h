@@ -10,8 +10,17 @@ class Sonar {
 
   public:
     Sonar(int trigPin, int echoPin);
+    /**
+    * returns the pin to send signal
+    */
     int getTrigPin();
+    /**
+    * returns the pin to receive signal
+    */
     int getEchoPin();
+    /**
+    * calculates the distance from the value read in input
+    */
     int calculateDistance(double rawVal);
 };
 

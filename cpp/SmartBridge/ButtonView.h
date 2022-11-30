@@ -6,6 +6,9 @@
 
 class ButtonView : public BaseView {
   public:
+    /**
+    * return true if the button is pressed
+    */
     static bool checkPress(int pin){
       return digitalRead(pin);
     }
